@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="dark light">
+  <title>Havenwood MVP</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0c1116;
+      --panel: #141b22;
+      --panel-2: #0f151b;
+      --text: #f4f7fb;
+      --muted: #c1ccd8;
+      --border: #2b3845;
+      --accent-strong: #c8ecff;
+      --danger: #ffb4b4;
+      --success: #b7ffd0;
+      --focus: #ffffff;
+    }
+    * { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    body {
+      margin: 0; background: var(--bg); color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.45; font-size: 18px;
+    }
+    .app { max-width: 52rem; margin: 0 auto; padding: env(safe-area-inset-top) 1rem env(safe-area-inset-bottom); }
+    header { padding: 1rem 0 0.75rem; }
+    h1 { margin: 0; font-size: 1.7rem; line-height: 1.1; }
+    .lede { margin: 0.5rem 0 0; color: var(--muted); max-width: 40rem; }
+    .panel { background: var(--panel); border: 1px solid var(--border); border-radius: 0.9rem; padding: 1rem; margin-top: 1rem; }
+    .panel h2 { margin: 0 0 0.75rem; font-size: 1.1rem; }
+    .status-line { margin: 0.35rem 0; }
+    .status-value { color: var(--accent-strong); font-weight: 700; }
+    .resource-grid { display: grid; grid-template-columns: 1fr; gap: 0.75rem; }
+    .resource-card { background: var(--panel-2); border: 1px solid var(--border); border-radius: 0.8rem; padding: 0.85rem 0.9rem; }
+    .resource-name { margin: 0; font-size: 1rem; color: var(--muted); }
+    .resource-amount { margin: 0.25rem 0 0; font-size: 1.6rem; font-weight: 700; }
+    .resource-note { margin: 0.2rem 0 0; color: var(--muted); font-size: 0.95rem; }
+    .actions { display: grid; gap: 0.75rem; }
+    button {
+      appearance: none; border: 1px solid var(--border); background: #1a2430; color: var(--text);
+      border-radius: 0.85rem; min-height: 48px; padding: 0.9rem 1rem; font: inherit;
+      text-align: left; width: 100%; touch-action: manipulation;
+    }
+    button:hover { background: #223041; }
+    button:active { transform: translateY(1px); }
+    button:disabled { opacity: 0.55; cursor: not-allowed; }
+    button:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
+    .button-title { display: block; font-weight: 700; margin-bottom: 0.15rem; }
+    .button-subtitle { display: block; color: var(--muted); font-size: 0.95rem; }
+    .log { min-height: 3.2rem; margin: 0; color: var(--success); }
+    .warning { color: var(--danger); }
+    .footer-note { margin: 1rem 0 0; color: var(--muted); font-size: 0.95rem; }
+    @media (min-width: 40rem) { .resource-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header>
+      <h1>Havenwood</h1>
+      <p class="lede">A screen reader friendly idle RPG MVP. Use Scavenge to gather Scrap and Fiber, then craft tools to improve future scavenging.</p>
+    </header>
+    <main aria-label="Havenwood game">
+      <section class="panel" aria-labelledby="status-heading">
+        <h2 id="status-heading">Status</h2>
+        <p class="status-line">Tool level: <span id="toolLevel" class="status-value" aria-live="polite">0</span></p>
+        <p class="status-line">Scavenge yield: <span id="yieldText" class="status-value" aria-live="polite">2 to 4 Scrap, Fiber chance 20%</span></p>
+        <p class="status-line">Save state: <span id="saveState" class="status-value" aria-live="polite">Not saved yet</span></p>
+        <p id="message" class="log" role="status" aria-live="polite" aria-atomic="true">You wake in the woods with empty pockets.</p>
+      </section>
+      <section class="panel" aria-labelledby="resources-heading">
+        <h2 id="resources-heading">Resources</h2>
+        <div class="resource-grid" role="list" aria-label="Current resources">
+          <div class="resource-card" role="listitem"><p class="resource-name">Scrap</p><p id="scrapAmount" class="resource-amount" aria-live="polite">0</p><p class="resource-note">Primary material for crafting.</p></div>
+          <div class="resource-card" role="listitem"><p class="resource-name">Fiber</p><p id="fiberAmount" class="resource-amount" aria-live="polite">0</p><p class="resource-note">Found occasionally while scavenging.</p></div>
+          <div class="resource-card" role="listitem"><p class="resource-name">Tools</p><p id="toolsAmount" class="resource-amount" aria-live="polite">0</p><p class="resource-note">Each tool improves scavenging.</p></div>
+        </div>
+      </section>
+      <section class="panel" aria-labelledby="actions-heading">
+        <h2 id="actions-heading">Actions</h2>
+        <div class="actions">
+          <button id="scavengeButton" type="button" aria-describedby="scavengeHelp"><span class="button-title">Scavenge</span><span class="button-subtitle" id="scavengeHelp">Gather Scrap and sometimes Fiber.</span></button>
+          <button id="craftButton" type="button" aria-describedby="craftHelp"><span class="button-title">Craft Improvised Tool</span><span class="button-subtitle" id="craftHelp">Cost: 10 Scrap and 2 Fiber. Improves future Scavenge results.</span></button>
+          <button id="resetButton" type="button" aria-describedby="resetHelp"><span class="button-title">Reset save</span><span class="button-subtitle" id="resetHelp">Clear local progress and start over.</span></button>
+        </div>
+      </section>
+      <footer><p class="footer-note">Saved locally in Safari on this device. No account required.</p></footer>
+    </main>
+  </div>
+  <script>
+    (function () {
+      const STORAGE_KEY = 'havenwood-mvp-save-v1';
+      const SAVE_VERSION = 1;
+      const initialState = {
+        version: SAVE_VERSION,
+        createdAt: Date.now(),
+        updatedAt: Date.now(),
+        resources: { scrap: 0, fiber: 0 },
+        tools: 0,
+        lastAction: 'You wake in the woods with empty pockets.',
+      };
+      const els = {
+        toolLevel: document.getElementById('toolLevel'),
+        yieldText: document.getElementById('yieldText'),
+        saveState: document.getElementById('saveState'),
+        message: document.getElementById('message'),
+        scrapAmount: document.getElementById('scrapAmount'),
+        fiberAmount: document.getElementById('fiberAmount'),
+        toolsAmount: document.getElementById('toolsAmount'),
+        scavengeButton: document.getElementById('scavengeButton'),
+        craftButton: document.getElementById('craftButton'),
+        resetButton: document.getElementById('resetButton'),
+      };
+      function clone(v) { return JSON.parse(JSON.stringify(v)); }
+      function clamp(n, min, max) { return Math.min(max, Math.max(min, n)); }
+      function fmtPct(value) { return Math.round(value * 100) + '%'; }
+      function getYieldRange(tools) { return { min: 2 + tools, max: 4 + tools * 2 }; }
+      function getFiberChance(tools) { return clamp(0.2 + tools * 0.08, 0.2, 0.6); }
+      function loadState() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (!raw) return { state: clone(initialState), loaded: false };
+          const parsed = JSON.parse(raw);
+          if (!parsed || parsed.version !== SAVE_VERSION) return { state: clone(initialState), loaded: false };
+          return {
+            state: {
+              ...clone(initialState),
+              ...parsed,
+              resources: { ...clone(initialState.resources), ...(parsed.resources || {}) },
+            },
+            loaded: true,
+          };
+        } catch {
+          return { state: clone(initialState), loaded: false };
+        }
+      }
+      const loaded = loadState();
+      let state = loaded.state;
+      function setMessage(text, kind) {
+        els.message.textContent = text;
+        els.message.className = kind === 'error' ? 'log warning' : 'log';
+      }
+      function saveState() {
+        state.updatedAt = Date.now();
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+          els.saveState.textContent = 'Saved just now';
+          els.saveState.className = 'status-value';
+        } catch {
+          els.saveState.textContent = 'Save failed';
+          els.saveState.className = 'status-value warning';
+        }
+      }
+      function updateUI() {
+        const range = getYieldRange(state.tools);
+        const chance = getFiberChance(state.tools);
+        els.toolLevel.textContent = String(state.tools);
+        els.yieldText.textContent = range.min + ' to ' + range.max + ' Scrap, Fiber chance ' + fmtPct(chance);
+        els.scrapAmount.textContent = String(state.resources.scrap);
+        els.fiberAmount.textContent = String(state.resources.fiber);
+        els.toolsAmount.textContent = String(state.tools);
+        els.craftButton.disabled = state.resources.scrap < 10 || state.resources.fiber < 2;
+        if (state.resources.scrap < 10 || state.resources.fiber < 2) els.craftButton.setAttribute('aria-disabled', 'true'); else els.craftButton.removeAttribute('aria-disabled');
+      }
+      function scavenge() {
+        const range = getYieldRange(state.tools);
+        const scrap = range.min + Math.floor(Math.random() * (range.max - range.min + 1));
+        const fiber = Math.random() < getFiberChance(state.tools) ? 1 : 0;
+        state.resources.scrap += scrap;
+        state.resources.fiber += fiber;
+        state.lastAction = 'You scavenged ' + scrap + ' Scrap ' + (fiber ? 'and 1 Fiber.' : 'and no Fiber.');
+        setMessage(state.lastAction);
+        saveState();
+        updateUI();
+      }
+      function craftTool() {
+        if (state.resources.scrap < 10 || state.resources.fiber < 2) {
+          setMessage('You need 10 Scrap and 2 Fiber to craft an Improvised Tool.', 'error');
+          return;
+        }
+        state.resources.scrap -= 10;
+        state.resources.fiber -= 2;
+        state.tools += 1;
+        state.lastAction = 'You crafted an Improvised Tool. Scavenge is now stronger.';
+        setMessage(state.lastAction);
+        saveState();
+        updateUI();
+      }
+      function resetSave() {
+        if (!window.confirm('Reset Havenwood save data on this device?')) return;
+        state = clone(initialState);
+        try { localStorage.removeItem(STORAGE_KEY); } catch {}
+        setMessage('Save cleared. You are back at the start.');
+        saveState();
+        updateUI();
+      }
+      els.scavengeButton.addEventListener('click', scavenge);
+      els.craftButton.addEventListener('click', craftTool);
+      els.resetButton.addEventListener('click', resetSave);
+      window.addEventListener('beforeunload', saveState);
+      updateUI();
+      if (state.lastAction) setMessage(state.lastAction);
+      els.saveState.textContent = loaded.loaded ? 'Loaded saved game' : 'Ready';
+    })();
+  </script>
+</body>
+</html>
