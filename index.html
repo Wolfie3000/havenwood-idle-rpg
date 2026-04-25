@@ -4,121 +4,379 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="color-scheme" content="dark light">
-  <title>Havenwood MVP</title>
+  <title>Havenwood Stone Age MVP</title>
   <style>
     :root {
       color-scheme: dark;
-      --bg: #0c1116;
-      --panel: #141b22;
+      --bg: #0b1015;
+      --panel: #131a21;
       --panel-2: #0f151b;
-      --text: #f4f7fb;
-      --muted: #c1ccd8;
-      --border: #2b3845;
-      --accent-strong: #c8ecff;
-      --danger: #ffb4b4;
-      --success: #b7ffd0;
+      --text: #f5f8fc;
+      --muted: #c3ceda;
+      --border: #2a3845;
+      --accent: #9dd8ff;
+      --accent-2: #d7f1ff;
+      --good: #b6ffce;
+      --bad: #ffb3b3;
       --focus: #ffffff;
     }
+
     * { box-sizing: border-box; }
     html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
     body {
-      margin: 0; background: var(--bg); color: var(--text);
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      line-height: 1.45; font-size: 18px;
+      font-size: 18px;
+      line-height: 1.45;
     }
-    .app { max-width: 52rem; margin: 0 auto; padding: env(safe-area-inset-top) 1rem env(safe-area-inset-bottom); }
-    header { padding: 1rem 0 0.75rem; }
-    h1 { margin: 0; font-size: 1.7rem; line-height: 1.1; }
-    .lede { margin: 0.5rem 0 0; color: var(--muted); max-width: 40rem; }
-    .panel { background: var(--panel); border: 1px solid var(--border); border-radius: 0.9rem; padding: 1rem; margin-top: 1rem; }
-    .panel h2 { margin: 0 0 0.75rem; font-size: 1.1rem; }
-    .status-line { margin: 0.35rem 0; }
-    .status-value { color: var(--accent-strong); font-weight: 700; }
-    .resource-grid { display: grid; grid-template-columns: 1fr; gap: 0.75rem; }
-    .resource-card { background: var(--panel-2); border: 1px solid var(--border); border-radius: 0.8rem; padding: 0.85rem 0.9rem; }
-    .resource-name { margin: 0; font-size: 1rem; color: var(--muted); }
-    .resource-amount { margin: 0.25rem 0 0; font-size: 1.6rem; font-weight: 700; }
-    .resource-note { margin: 0.2rem 0 0; color: var(--muted); font-size: 0.95rem; }
-    .actions { display: grid; gap: 0.75rem; }
+    .app {
+      max-width: 56rem;
+      margin: 0 auto;
+      padding: env(safe-area-inset-top) 1rem env(safe-area-inset-bottom);
+    }
+    header {
+      padding: 1rem 0 0.75rem;
+    }
+    h1 {
+      margin: 0;
+      font-size: 1.8rem;
+      line-height: 1.1;
+    }
+    .lede {
+      margin: 0.55rem 0 0;
+      color: var(--muted);
+      max-width: 46rem;
+    }
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 0.95rem;
+      padding: 1rem;
+      margin-top: 1rem;
+    }
+    .panel h2 {
+      margin: 0 0 0.8rem;
+      font-size: 1.1rem;
+    }
+    .subtle {
+      color: var(--muted);
+      margin: 0.15rem 0 0;
+      font-size: 0.95rem;
+    }
+    .status-stack {
+      display: grid;
+      gap: 0.45rem;
+    }
+    .status-line {
+      margin: 0;
+    }
+    .status-value {
+      color: var(--accent-2);
+      font-weight: 700;
+    }
+    .log {
+      min-height: 3.4rem;
+      margin: 0.7rem 0 0;
+      color: var(--good);
+    }
+    .warning { color: var(--bad); }
+    .resource-grid,
+    .building-grid,
+    .research-grid {
+      display: grid;
+      gap: 0.75rem;
+    }
+    .resource-card,
+    .building-card,
+    .research-card {
+      background: var(--panel-2);
+      border: 1px solid var(--border);
+      border-radius: 0.85rem;
+      padding: 0.9rem;
+    }
+    .resource-name,
+    .building-name,
+    .research-name {
+      margin: 0;
+      color: var(--muted);
+      font-size: 1rem;
+    }
+    .resource-amount,
+    .building-amount,
+    .research-state {
+      margin: 0.2rem 0 0;
+      font-size: 1.55rem;
+      font-weight: 700;
+    }
+    .resource-note,
+    .building-note,
+    .research-note {
+      margin: 0.25rem 0 0;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+    .actions {
+      display: grid;
+      gap: 0.75rem;
+    }
     button {
-      appearance: none; border: 1px solid var(--border); background: #1a2430; color: var(--text);
-      border-radius: 0.85rem; min-height: 48px; padding: 0.9rem 1rem; font: inherit;
-      text-align: left; width: 100%; touch-action: manipulation;
+      appearance: none;
+      border: 1px solid var(--border);
+      background: #1a2430;
+      color: var(--text);
+      border-radius: 0.85rem;
+      min-height: 48px;
+      padding: 0.95rem 1rem;
+      font: inherit;
+      text-align: left;
+      width: 100%;
+      touch-action: manipulation;
     }
-    button:hover { background: #223041; }
+    button:hover { background: #243241; }
     button:active { transform: translateY(1px); }
     button:disabled { opacity: 0.55; cursor: not-allowed; }
-    button:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
-    .button-title { display: block; font-weight: 700; margin-bottom: 0.15rem; }
-    .button-subtitle { display: block; color: var(--muted); font-size: 0.95rem; }
-    .log { min-height: 3.2rem; margin: 0; color: var(--success); }
-    .warning { color: var(--danger); }
-    .footer-note { margin: 1rem 0 0; color: var(--muted); font-size: 0.95rem; }
-    @media (min-width: 40rem) { .resource-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+    button:focus-visible {
+      outline: 3px solid var(--focus);
+      outline-offset: 3px;
+    }
+    .button-title {
+      display: block;
+      font-weight: 700;
+      margin-bottom: 0.16rem;
+    }
+    .button-subtitle {
+      display: block;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+    .tiny-actions {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      margin-top: 0.75rem;
+    }
+    .tiny-actions button {
+      width: auto;
+      min-width: 10rem;
+    }
+    .footer-note {
+      margin: 1rem 0 0;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+    .screen-reader-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+    @media (min-width: 42rem) {
+      .resource-grid,
+      .research-grid,
+      .building-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
   </style>
 </head>
 <body>
   <div class="app">
     <header>
       <h1>Havenwood</h1>
-      <p class="lede">A screen reader friendly idle RPG MVP. Use Scavenge to gather Scrap and Fiber, then craft tools to improve future scavenging.</p>
+      <p class="lede">Stone Age MVP for Safari on iPhone. Clean text, high contrast, large touch targets, and screen reader-first controls.</p>
     </header>
+
     <main aria-label="Havenwood game">
       <section class="panel" aria-labelledby="status-heading">
         <h2 id="status-heading">Status</h2>
-        <p class="status-line">Tool level: <span id="toolLevel" class="status-value" aria-live="polite">0</span></p>
-        <p class="status-line">Scavenge yield: <span id="yieldText" class="status-value" aria-live="polite">2 to 4 Scrap, Fiber chance 20%</span></p>
-        <p class="status-line">Save state: <span id="saveState" class="status-value" aria-live="polite">Not saved yet</span></p>
-        <p id="message" class="log" role="status" aria-live="polite" aria-atomic="true">You wake in the woods with empty pockets.</p>
+        <div class="status-stack" aria-label="Quick stats">
+          <p class="status-line">Age: <span id="ageText" class="status-value" aria-label="Current age Stone Age">Stone Age</span></p>
+          <p class="status-line">Population: <span id="populationText" class="status-value" aria-label="Population 2 of 2">2 of 2</span></p>
+          <p class="status-line">Housing: <span id="housingText" class="status-value" aria-label="Housing capacity 2 from 0 huts">2 from 0 huts</span></p>
+          <p class="status-line">Wood gathering: <span id="woodYieldText" class="status-value" aria-label="Wood yield 2 to 4">2 to 4</span></p>
+          <p class="status-line">Stone gathering: <span id="stoneYieldText" class="status-value" aria-label="Stone yield 1 to 3">1 to 3</span></p>
+          <p class="status-line">Food gathering: <span id="foodYieldText" class="status-value" aria-label="Food yield 2 to 4">2 to 4</span></p>
+          <p class="status-line">Save state: <span id="saveState" class="status-value" aria-live="polite">Not saved yet</span></p>
+        </div>
+        <p id="message" class="log" role="status" aria-live="polite" aria-atomic="true">You arrive at an empty camp and begin planning your first shelter.</p>
       </section>
+
       <section class="panel" aria-labelledby="resources-heading">
         <h2 id="resources-heading">Resources</h2>
         <div class="resource-grid" role="list" aria-label="Current resources">
-          <div class="resource-card" role="listitem"><p class="resource-name">Scrap</p><p id="scrapAmount" class="resource-amount" aria-live="polite">0</p><p class="resource-note">Primary material for crafting.</p></div>
-          <div class="resource-card" role="listitem"><p class="resource-name">Fiber</p><p id="fiberAmount" class="resource-amount" aria-live="polite">0</p><p class="resource-note">Found occasionally while scavenging.</p></div>
-          <div class="resource-card" role="listitem"><p class="resource-name">Tools</p><p id="toolsAmount" class="resource-amount" aria-live="polite">0</p><p class="resource-note">Each tool improves scavenging.</p></div>
+          <div class="resource-card" role="listitem">
+            <p class="resource-name">Wood</p>
+            <p id="woodAmount" class="resource-amount" aria-live="polite" aria-label="Wood 0">0</p>
+            <p class="resource-note">Used for huts, tools, and early research.</p>
+          </div>
+          <div class="resource-card" role="listitem">
+            <p class="resource-name">Stone</p>
+            <p id="stoneAmount" class="resource-amount" aria-live="polite" aria-label="Stone 0">0</p>
+            <p class="resource-note">Needed for research and stronger structures.</p>
+          </div>
+          <div class="resource-card" role="listitem">
+            <p class="resource-name">Food</p>
+            <p id="foodAmount" class="resource-amount" aria-live="polite" aria-label="Food 0">0</p>
+            <p class="resource-note">Keeps the camp growing and stable.</p>
+          </div>
+          <div class="resource-card" role="listitem">
+            <p class="resource-name">Research</p>
+            <p id="researchPointsText" class="resource-amount" aria-live="polite" aria-label="Research points 0">0</p>
+            <p class="resource-note">Gained by studying Fire and tools later.</p>
+          </div>
         </div>
       </section>
+
       <section class="panel" aria-labelledby="actions-heading">
         <h2 id="actions-heading">Actions</h2>
         <div class="actions">
-          <button id="scavengeButton" type="button" aria-describedby="scavengeHelp"><span class="button-title">Scavenge</span><span class="button-subtitle" id="scavengeHelp">Gather Scrap and sometimes Fiber.</span></button>
-          <button id="craftButton" type="button" aria-describedby="craftHelp"><span class="button-title">Craft Improvised Tool</span><span class="button-subtitle" id="craftHelp">Cost: 10 Scrap and 2 Fiber. Improves future Scavenge results.</span></button>
-          <button id="resetButton" type="button" aria-describedby="resetHelp"><span class="button-title">Reset save</span><span class="button-subtitle" id="resetHelp">Clear local progress and start over.</span></button>
+          <button id="gatherWoodButton" type="button" aria-description="Gather wood to support huts and research. Higher stone tools increase yield.">
+            <span class="button-title">Gather Wood</span>
+            <span class="button-subtitle">Collect 2 to 4 wood. Stone Tools improves the yield.</span>
+          </button>
+          <button id="gatherStoneButton" type="button" aria-description="Gather stone for research and stronger buildings. Higher stone tools increase yield.">
+            <span class="button-title">Gather Stone</span>
+            <span class="button-subtitle">Collect 1 to 3 stone. Stone Tools improves the yield.</span>
+          </button>
+          <button id="gatherFoodButton" type="button" aria-description="Gather food to keep the camp stable. Fire improves the yield.">
+            <span class="button-title">Gather Food</span>
+            <span class="button-subtitle">Collect 2 to 4 food. Fire improves the yield.</span>
+          </button>
         </div>
       </section>
-      <footer><p class="footer-note">Saved locally in Safari on this device. No account required.</p></footer>
+
+      <section class="panel" aria-labelledby="research-heading">
+        <h2 id="research-heading">Research</h2>
+        <p class="subtle">The research tree is data driven so new ages can add many more technologies later.</p>
+        <div id="researchGrid" class="research-grid" role="list" aria-label="Research technologies"></div>
+      </section>
+
+      <section class="panel" aria-labelledby="buildings-heading">
+        <h2 id="buildings-heading">Buildings</h2>
+        <p class="subtle">This building system is designed to scale to many structures across later ages.</p>
+        <div id="buildingGrid" class="building-grid" role="list" aria-label="Buildings"></div>
+      </section>
+
+      <section class="panel" aria-labelledby="save-heading">
+        <h2 id="save-heading">Save</h2>
+        <div class="tiny-actions">
+          <button id="resetButton" type="button">Reset save</button>
+        </div>
+        <p class="footer-note">Progress is saved locally in Safari using localStorage. No account required.</p>
+      </section>
     </main>
   </div>
+
   <script>
     (function () {
-      const STORAGE_KEY = 'havenwood-mvp-save-v1';
+      const STORAGE_KEY = 'havenwood-stone-age-save-v1';
       const SAVE_VERSION = 1;
+
+      const researchDefs = [
+        {
+          id: 'fire',
+          name: 'Fire',
+          cost: { wood: 12, stone: 6, food: 0 },
+          description: 'Unlocks better food gathering and improves camp stability.',
+          effectText: '+1 Food from Gather Food.',
+        },
+        {
+          id: 'stone_tools',
+          name: 'Stone Tools',
+          cost: { wood: 8, stone: 12, food: 0 },
+          description: 'Sharpens the first tools and makes resource gathering more efficient.',
+          effectText: '+1 Wood from Gather Wood and +1 Stone from Gather Stone.',
+        },
+      ];
+
+      const buildingDefs = [
+        {
+          id: 'hut',
+          name: 'Hut',
+          cost: { wood: 18, stone: 8, food: 0 },
+          description: 'Provides housing for the camp and increases the population cap.',
+          effectText: '+4 housing capacity per hut.',
+        },
+      ];
+
       const initialState = {
         version: SAVE_VERSION,
         createdAt: Date.now(),
         updatedAt: Date.now(),
-        resources: { scrap: 0, fiber: 0 },
-        tools: 0,
-        lastAction: 'You wake in the woods with empty pockets.',
+        age: 'Stone Age',
+        population: 2,
+        baseHousing: 2,
+        resources: {
+          wood: 0,
+          stone: 0,
+          food: 0,
+          research: 0,
+        },
+        buildings: {
+          hut: 0,
+        },
+        research: {
+          fire: false,
+          stone_tools: false,
+        },
+        lastAction: 'You arrive at an empty camp and begin planning your first shelter.',
       };
+
       const els = {
-        toolLevel: document.getElementById('toolLevel'),
-        yieldText: document.getElementById('yieldText'),
+        ageText: document.getElementById('ageText'),
+        populationText: document.getElementById('populationText'),
+        housingText: document.getElementById('housingText'),
+        woodYieldText: document.getElementById('woodYieldText'),
+        stoneYieldText: document.getElementById('stoneYieldText'),
+        foodYieldText: document.getElementById('foodYieldText'),
         saveState: document.getElementById('saveState'),
         message: document.getElementById('message'),
-        scrapAmount: document.getElementById('scrapAmount'),
-        fiberAmount: document.getElementById('fiberAmount'),
-        toolsAmount: document.getElementById('toolsAmount'),
-        scavengeButton: document.getElementById('scavengeButton'),
-        craftButton: document.getElementById('craftButton'),
+        woodAmount: document.getElementById('woodAmount'),
+        stoneAmount: document.getElementById('stoneAmount'),
+        foodAmount: document.getElementById('foodAmount'),
+        researchPointsText: document.getElementById('researchPointsText'),
+        gatherWoodButton: document.getElementById('gatherWoodButton'),
+        gatherStoneButton: document.getElementById('gatherStoneButton'),
+        gatherFoodButton: document.getElementById('gatherFoodButton'),
+        researchGrid: document.getElementById('researchGrid'),
+        buildingGrid: document.getElementById('buildingGrid'),
         resetButton: document.getElementById('resetButton'),
       };
-      function clone(v) { return JSON.parse(JSON.stringify(v)); }
-      function clamp(n, min, max) { return Math.min(max, Math.max(min, n)); }
-      function fmtPct(value) { return Math.round(value * 100) + '%'; }
-      function getYieldRange(tools) { return { min: 2 + tools, max: 4 + tools * 2 }; }
-      function getFiberChance(tools) { return clamp(0.2 + tools * 0.08, 0.2, 0.6); }
+
+      function clone(value) {
+        return JSON.parse(JSON.stringify(value));
+      }
+
+      function clamp(value, min, max) {
+        return Math.min(max, Math.max(min, value));
+      }
+
+      function formatCost(cost) {
+        const parts = [];
+        if (cost.wood) parts.push(cost.wood + ' Wood');
+        if (cost.stone) parts.push(cost.stone + ' Stone');
+        if (cost.food) parts.push(cost.food + ' Food');
+        if (cost.research) parts.push(cost.research + ' Research');
+        return parts.length ? parts.join(', ') : 'Free';
+      }
+
+      function canPay(cost) {
+        return Object.keys(cost).every((key) => (state.resources[key] || 0) >= cost[key]);
+      }
+
+      function pay(cost) {
+        for (const key of Object.keys(cost)) {
+          state.resources[key] -= cost[key];
+        }
+      }
+
       function loadState() {
         try {
           const raw = localStorage.getItem(STORAGE_KEY);
@@ -130,6 +388,8 @@
               ...clone(initialState),
               ...parsed,
               resources: { ...clone(initialState.resources), ...(parsed.resources || {}) },
+              buildings: { ...clone(initialState.buildings), ...(parsed.buildings || {}) },
+              research: { ...clone(initialState.research), ...(parsed.research || {}) },
             },
             loaded: true,
           };
@@ -137,12 +397,15 @@
           return { state: clone(initialState), loaded: false };
         }
       }
+
       const loaded = loadState();
       let state = loaded.state;
+
       function setMessage(text, kind) {
         els.message.textContent = text;
         els.message.className = kind === 'error' ? 'log warning' : 'log';
       }
+
       function saveState() {
         state.updatedAt = Date.now();
         try {
@@ -154,53 +417,228 @@
           els.saveState.className = 'status-value warning';
         }
       }
-      function updateUI() {
-        const range = getYieldRange(state.tools);
-        const chance = getFiberChance(state.tools);
-        els.toolLevel.textContent = String(state.tools);
-        els.yieldText.textContent = range.min + ' to ' + range.max + ' Scrap, Fiber chance ' + fmtPct(chance);
-        els.scrapAmount.textContent = String(state.resources.scrap);
-        els.fiberAmount.textContent = String(state.resources.fiber);
-        els.toolsAmount.textContent = String(state.tools);
-        els.craftButton.disabled = state.resources.scrap < 10 || state.resources.fiber < 2;
-        if (state.resources.scrap < 10 || state.resources.fiber < 2) els.craftButton.setAttribute('aria-disabled', 'true'); else els.craftButton.removeAttribute('aria-disabled');
+
+      function housingCap() {
+        return state.baseHousing + state.buildings.hut * 4;
       }
-      function scavenge() {
-        const range = getYieldRange(state.tools);
-        const scrap = range.min + Math.floor(Math.random() * (range.max - range.min + 1));
-        const fiber = Math.random() < getFiberChance(state.tools) ? 1 : 0;
-        state.resources.scrap += scrap;
-        state.resources.fiber += fiber;
-        state.lastAction = 'You scavenged ' + scrap + ' Scrap ' + (fiber ? 'and 1 Fiber.' : 'and no Fiber.');
+
+      function woodYieldRange() {
+        const bonus = state.research.stone_tools ? 1 : 0;
+        return { min: 2 + bonus, max: 4 + bonus };
+      }
+
+      function stoneYieldRange() {
+        const bonus = state.research.stone_tools ? 1 : 0;
+        return { min: 1 + bonus, max: 3 + bonus };
+      }
+
+      function foodYieldRange() {
+        const bonus = state.research.fire ? 1 : 0;
+        return { min: 2 + bonus, max: 4 + bonus };
+      }
+
+      function applyPopulationLimit() {
+        state.population = clamp(state.population, 0, housingCap());
+      }
+
+      function renderResearch() {
+        els.researchGrid.innerHTML = '';
+
+        for (const tech of researchDefs) {
+          const researched = Boolean(state.research[tech.id]);
+          const disabled = researched || !canPay(tech.cost);
+          const item = document.createElement('div');
+          item.className = 'research-card';
+          item.setAttribute('role', 'listitem');
+
+          const title = document.createElement('p');
+          title.className = 'research-name';
+          title.textContent = tech.name;
+
+          const stateLine = document.createElement('p');
+          stateLine.className = 'research-state';
+          stateLine.textContent = researched ? 'Researched' : 'Available';
+          stateLine.setAttribute('aria-label', tech.name + ' ' + (researched ? 'researched' : 'available'));
+
+          const note = document.createElement('p');
+          note.className = 'research-note';
+          note.textContent = tech.description + ' Cost: ' + formatCost(tech.cost) + '. ' + tech.effectText;
+          const button = document.createElement('button');
+          button.type = 'button';
+          button.disabled = disabled;
+          button.setAttribute('aria-description', tech.description + ' ' + tech.effectText + ' Cost: ' + formatCost(tech.cost) + '.');
+          button.innerHTML = '<span class="button-title">Research ' + tech.name + '</span><span class="button-subtitle">' + (researched ? 'Already completed.' : 'Cost: ' + formatCost(tech.cost) + '.') + '</span>';
+          button.addEventListener('click', () => researchTech(tech.id));
+
+          item.appendChild(title);
+          item.appendChild(stateLine);
+          item.appendChild(note);
+          item.appendChild(button);
+          els.researchGrid.appendChild(item);
+        }
+      }
+
+      function renderBuildings() {
+        els.buildingGrid.innerHTML = '';
+
+        for (const building of buildingDefs) {
+          const count = state.buildings[building.id] || 0;
+          const item = document.createElement('div');
+          item.className = 'building-card';
+          item.setAttribute('role', 'listitem');
+
+          const title = document.createElement('p');
+          title.className = 'building-name';
+          title.textContent = building.name;
+
+          const countLine = document.createElement('p');
+          countLine.className = 'building-amount';
+          countLine.textContent = String(count);
+          countLine.setAttribute('aria-label', building.name + ' built ' + count + ' times');
+
+          const note = document.createElement('p');
+          note.className = 'building-note';
+          note.textContent = building.description + ' Cost: ' + formatCost(building.cost) + '. ' + building.effectText;
+
+          const button = document.createElement('button');
+          button.type = 'button';
+          button.disabled = !canPay(building.cost);
+          button.setAttribute('aria-description', building.description + ' ' + building.effectText + ' Cost: ' + formatCost(building.cost) + '.');
+          button.innerHTML = '<span class="button-title">Build ' + building.name + '</span><span class="button-subtitle">Cost: ' + formatCost(building.cost) + '.</span>';
+          button.addEventListener('click', () => buildStructure(building.id));
+
+          item.appendChild(title);
+          item.appendChild(countLine);
+          item.appendChild(note);
+          item.appendChild(button);
+          els.buildingGrid.appendChild(item);
+        }
+      }
+
+      function updateUI() {
+        const woodYield = woodYieldRange();
+        const stoneYield = stoneYieldRange();
+        const foodYield = foodYieldRange();
+        const housing = housingCap();
+
+        els.ageText.textContent = state.age;
+        els.populationText.textContent = state.population + ' of ' + housing;
+        els.populationText.setAttribute('aria-label', 'Population ' + state.population + ' of ' + housing);
+        els.housingText.textContent = housing + ' from ' + state.buildings.hut + ' huts';
+        els.housingText.setAttribute('aria-label', 'Housing capacity ' + housing + ' from ' + state.buildings.hut + ' huts');
+        els.woodYieldText.textContent = woodYield.min + ' to ' + woodYield.max;
+        els.woodYieldText.setAttribute('aria-label', 'Wood yield ' + woodYield.min + ' to ' + woodYield.max);
+        els.stoneYieldText.textContent = stoneYield.min + ' to ' + stoneYield.max;
+        els.stoneYieldText.setAttribute('aria-label', 'Stone yield ' + stoneYield.min + ' to ' + stoneYield.max);
+        els.foodYieldText.textContent = foodYield.min + ' to ' + foodYield.max;
+        els.foodYieldText.setAttribute('aria-label', 'Food yield ' + foodYield.min + ' to ' + foodYield.max);
+
+        els.woodAmount.textContent = String(state.resources.wood);
+        els.woodAmount.setAttribute('aria-label', 'Wood ' + state.resources.wood);
+        els.stoneAmount.textContent = String(state.resources.stone);
+        els.stoneAmount.setAttribute('aria-label', 'Stone ' + state.resources.stone);
+        els.foodAmount.textContent = String(state.resources.food);
+        els.foodAmount.setAttribute('aria-label', 'Food ' + state.resources.food);
+        els.researchPointsText.textContent = String(state.resources.research);
+        els.researchPointsText.setAttribute('aria-label', 'Research points ' + state.resources.research);
+
+        els.gatherWoodButton.disabled = false;
+        els.gatherStoneButton.disabled = false;
+        els.gatherFoodButton.disabled = false;
+
+        renderResearch();
+        renderBuildings();
+      }
+
+      function gatherWood() {
+        const range = woodYieldRange();
+        const amount = range.min + Math.floor(Math.random() * (range.max - range.min + 1));
+        state.resources.wood += amount;
+        state.resources.research += 1;
+        state.lastAction = 'You gathered ' + amount + ' Wood and gained 1 Research.';
         setMessage(state.lastAction);
         saveState();
         updateUI();
       }
-      function craftTool() {
-        if (state.resources.scrap < 10 || state.resources.fiber < 2) {
-          setMessage('You need 10 Scrap and 2 Fiber to craft an Improvised Tool.', 'error');
+
+      function gatherStone() {
+        const range = stoneYieldRange();
+        const amount = range.min + Math.floor(Math.random() * (range.max - range.min + 1));
+        state.resources.stone += amount;
+        state.resources.research += 1;
+        state.lastAction = 'You gathered ' + amount + ' Stone and gained 1 Research.';
+        setMessage(state.lastAction);
+        saveState();
+        updateUI();
+      }
+
+      function gatherFood() {
+        const range = foodYieldRange();
+        const amount = range.min + Math.floor(Math.random() * (range.max - range.min + 1));
+        state.resources.food += amount;
+        state.resources.research += 1;
+        state.lastAction = 'You gathered ' + amount + ' Food and gained 1 Research.';
+        setMessage(state.lastAction);
+        saveState();
+        updateUI();
+      }
+
+      function researchTech(id) {
+        const tech = researchDefs.find((entry) => entry.id === id);
+        if (!tech) return;
+        if (state.research[id]) {
+          setMessage(tech.name + ' is already researched.', 'error');
           return;
         }
-        state.resources.scrap -= 10;
-        state.resources.fiber -= 2;
-        state.tools += 1;
-        state.lastAction = 'You crafted an Improvised Tool. Scavenge is now stronger.';
+        if (!canPay(tech.cost)) {
+          setMessage('You need more resources to research ' + tech.name + '.', 'error');
+          return;
+        }
+        pay(tech.cost);
+        state.research[id] = true;
+        state.lastAction = 'You researched ' + tech.name + '. ' + tech.effectText;
         setMessage(state.lastAction);
         saveState();
         updateUI();
       }
+
+      function buildStructure(id) {
+        const building = buildingDefs.find((entry) => entry.id === id);
+        if (!building) return;
+        if (!canPay(building.cost)) {
+          setMessage('You need more resources to build ' + building.name + '.', 'error');
+          return;
+        }
+        pay(building.cost);
+        state.buildings[id] = (state.buildings[id] || 0) + 1;
+        if (id === 'hut') {
+          state.population = clamp(state.population, 0, housingCap());
+        }
+        state.lastAction = 'You built a ' + building.name + '. ' + building.effectText;
+        setMessage(state.lastAction);
+        saveState();
+        updateUI();
+      }
+
       function resetSave() {
         if (!window.confirm('Reset Havenwood save data on this device?')) return;
         state = clone(initialState);
-        try { localStorage.removeItem(STORAGE_KEY); } catch {}
+        try {
+          localStorage.removeItem(STORAGE_KEY);
+        } catch {
+          // ignore
+        }
         setMessage('Save cleared. You are back at the start.');
         saveState();
         updateUI();
       }
-      els.scavengeButton.addEventListener('click', scavenge);
-      els.craftButton.addEventListener('click', craftTool);
+
+      els.gatherWoodButton.addEventListener('click', gatherWood);
+      els.gatherStoneButton.addEventListener('click', gatherStone);
+      els.gatherFoodButton.addEventListener('click', gatherFood);
       els.resetButton.addEventListener('click', resetSave);
       window.addEventListener('beforeunload', saveState);
+
       updateUI();
       if (state.lastAction) setMessage(state.lastAction);
       els.saveState.textContent = loaded.loaded ? 'Loaded saved game' : 'Ready';
