@@ -21,28 +21,13 @@
     }
     * { box-sizing: border-box; }
     html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
-    body {
-      margin: 0;
-      background: var(--bg);
-      color: var(--text);
-      font: 18px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    }
-    .app {
-      max-width: 56rem;
-      margin: 0 auto;
-      padding: env(safe-area-inset-top) 1rem env(safe-area-inset-bottom);
-    }
+    body { margin: 0; background: var(--bg); color: var(--text); font: 18px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+    .app { max-width: 56rem; margin: 0 auto; padding: env(safe-area-inset-top) 1rem env(safe-area-inset-bottom); }
     header { padding: 1rem 0 0.75rem; }
     h1 { margin: 0; font-size: 1.8rem; line-height: 1.1; }
-    .lede { margin: 0.5rem 0 0; color: var(--muted); max-width: 45rem; }
+    .lede { margin: 0.5rem 0 0; color: var(--muted); }
     main { padding-bottom: 1rem; }
-    section.panel {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 0.95rem;
-      padding: 1rem;
-      margin-top: 1rem;
-    }
+    section.panel { background: var(--panel); border: 1px solid var(--border); border-radius: 0.95rem; padding: 1rem; margin-top: 1rem; }
     section h2 { margin: 0 0 0.75rem; font-size: 1.15rem; }
     section h3 { margin: 0.95rem 0 0.5rem; font-size: 1rem; }
     .statline { margin: 0.25rem 0; }
@@ -51,29 +36,12 @@
     .status.bad { color: var(--bad); }
     .small { margin: 0.25rem 0 0; color: var(--muted); font-size: 0.95rem; }
     .grid { display: grid; grid-template-columns: 1fr; gap: 0.75rem; }
-    .card {
-      background: var(--panel-2);
-      border: 1px solid var(--border);
-      border-radius: 0.85rem;
-      padding: 0.9rem;
-    }
+    .card { background: var(--panel-2); border: 1px solid var(--border); border-radius: 0.85rem; padding: 0.9rem; }
     .card-title { margin: 0; font-size: 1rem; color: var(--muted); }
     .card-value { margin: 0.25rem 0 0; font-size: 1.55rem; font-weight: 700; }
     .card-note { margin: 0.25rem 0 0; color: var(--muted); font-size: 0.95rem; }
     .actions, .list { display: grid; gap: 0.75rem; }
-    .action {
-      appearance: none;
-      border: 1px solid var(--border);
-      background: #1a252b;
-      color: var(--text);
-      border-radius: 0.85rem;
-      min-height: 50px;
-      width: 100%;
-      padding: 0.85rem 0.95rem;
-      font: inherit;
-      text-align: left;
-      touch-action: manipulation;
-    }
+    .action { appearance: none; border: 1px solid var(--border); background: #1a252b; color: var(--text); border-radius: 0.85rem; min-height: 50px; width: 100%; padding: 0.85rem 0.95rem; font: inherit; text-align: left; touch-action: manipulation; }
     .action:hover { background: #23323a; }
     .action:active { transform: translateY(1px); }
     .action:disabled { opacity: 0.55; }
@@ -101,58 +69,18 @@
         <p id="status" class="status" role="status" aria-live="polite" aria-atomic="true">You arrive at a small camp with nothing but your hands.</p>
         <h3>Actions</h3>
         <div class="actions">
-          <button class="action" id="gatherWoodBtn" type="button" aria-describedby="gatherWoodDesc"><span class="button-title">Gather Wood</span><span class="button-subtitle" id="gatherWoodDesc">Gain 2 to 4 Wood. Sharpened Tools and Fire Pit improve this later.</span></button>
-          <button class="action" id="gatherStoneBtn" type="button" aria-describedby="gatherStoneDesc"><span class="button-title">Gather Stone</span><span class="button-subtitle" id="gatherStoneDesc">Gain 1 to 3 Stone. Flint is locked until Stone Knapping is researched.</span></button>
-          <button class="action" id="gatherFoodBtn" type="button" aria-describedby="gatherFoodDesc"><span class="button-title">Gather Food</span><span class="button-subtitle" id="gatherFoodDesc">Gain 1 to 4 Food. Spears improve your hunter-gatherers later.</span></button>
+          <button class="action" id="gatherWoodBtn" type="button" aria-describedby="gatherWoodDesc"><span class="button-title">Gather Wood</span><span class="button-subtitle" id="gatherWoodDesc">Gain 2 to 4 Wood.</span></button>
+          <button class="action" id="gatherStoneBtn" type="button" aria-describedby="gatherStoneDesc"><span class="button-title">Gather Stone</span><span class="button-subtitle" id="gatherStoneDesc">Gain 1 to 3 Stone. Flint stays hidden until discovery research is complete.</span></button>
+          <button class="action" id="gatherFoodBtn" type="button" aria-describedby="gatherFoodDesc"><span class="button-title">Gather Food</span><span class="button-subtitle" id="gatherFoodDesc">Gain 1 to 4 Food.</span></button>
         </div>
       </section>
 
       <section class="panel" aria-labelledby="resources-heading">
         <h2 id="resources-heading">Resources</h2>
-        <div class="grid" role="list" aria-label="Current resources">
-          <div class="card" role="listitem">
-            <p class="card-title">Wood</p>
-            <p class="card-value" id="woodText" aria-label="Wood 0 of 40">0 / 40</p>
-            <p class="card-note">Used for buildings and research.</p>
-          </div>
-          <div class="card" role="listitem">
-            <p class="card-title">Stone</p>
-            <p class="card-value" id="stoneText" aria-label="Stone 0 of 40">0 / 40</p>
-            <p class="card-note">Used for stronger structures and research.</p>
-          </div>
-          <div class="card" role="listitem">
-            <p class="card-title">Food</p>
-            <p class="card-value" id="foodText" aria-label="Food 0 of 40">0 / 40</p>
-            <p class="card-note">Consumed by the tribe. Hunter-Gatherer keeps it moving.</p>
-          </div>
-          <div class="card" role="listitem">
-            <p class="card-title">Flint</p>
-            <p class="card-value" id="flintText" aria-label="Flint locked until Stone Knapping">Locked</p>
-            <p class="card-note">Unlocked by Stone Knapping, then gathered from Stone at a chance.</p>
-          </div>
-          <div class="card" role="listitem">
-            <p class="card-title">Knowledge</p>
-            <p class="card-value" id="knowledgeText" aria-label="Knowledge 0 of 10">0 / 10</p>
-            <p class="card-note">Generated by sages and Shaman's Circle.</p>
-          </div>
-        </div>
+        <div class="grid" id="resourceGrid" role="list" aria-label="Current resources"></div>
       </section>
 
-      <section class="panel" aria-labelledby="research-heading">
-        <h2 id="research-heading">Research</h2>
-        <p class="small">Research comes before buildings. Each item explains what is missing when focused.</p>
-        <div class="list" id="researchList" role="list" aria-label="Available technologies"></div>
-      </section>
-
-      <section class="panel" aria-labelledby="tribe-heading">
-        <h2 id="tribe-heading">Tribe</h2>
-        <p class="small">The tribe section contains buildings and jobs. The Tribal Hall marks formal tribal organization.</p>
-        <h3>Buildings</h3>
-        <div class="list" id="buildingList" role="list" aria-label="Available buildings"></div>
-        <h3>Jobs</h3>
-        <p class="small" id="jobNote">Worker assignments unlock after the Tribal Hall is built.</p>
-        <div class="list" id="jobList" role="list" aria-label="Worker assignments"></div>
-      </section>
+      <div id="progressionMount"></div>
 
       <section class="panel">
         <h2>Save</h2>
@@ -162,421 +90,189 @@
         <p class="small" id="saveText">Saved locally in Safari on this device.</p>
       </section>
 
-      <footer>
-        <p class="footer-note">Designed for one-column iPhone Safari use with VoiceOver.</p>
-      </footer>
+      <footer><p class="footer-note">Designed for one-column iPhone Safari use with VoiceOver.</p></footer>
     </main>
   </div>
 
   <script>
-    (function () {
-      const STORAGE_KEY = 'havenwood-stone-age-expansion-v1';
+    (() => {
+      const STORAGE_KEY = 'havenwood-ui-hidden-until-unlocked-v1';
       const SAVE_VERSION = 1;
       const TICK_MS = 1000;
 
       const researchDefs = [
-        {
-          id: 'storage',
-          name: 'Storage',
-          cost: { wood: 8, stone: 8, food: 0, flint: 0, knowledge: 2 },
-          description: 'Unlocks Granary, Wood Pile, and Stone Pile buildings.',
-          requirements: [],
-          onResearch(state) {
-            state.unlocks.storage = true;
-          }
-        },
-        {
-          id: 'stone_knapping',
-          name: 'Stone Knapping',
-          cost: { wood: 4, stone: 6, food: 0, flint: 0, knowledge: 2 },
-          description: 'Passive unlock that lets Flint appear as a resource from Stone gathering.',
-          requirements: [],
-          onResearch(state) {
-            state.research.stone_knapping = true;
-            state.unlocks.flint = true;
-            state.modifiers.stoneFlintChance = 0.2;
-          }
-        },
-        {
-          id: 'fire',
-          name: 'Fire',
-          cost: { wood: 8, stone: 8, food: 0, flint: 2, knowledge: 3 },
-          description: 'Requires Stone Knapping. Improves camp efficiency and unlocks Cooking.',
-          requirements: ['stone_knapping'],
-          onResearch(state) {
-            state.research.fire = true;
-            state.modifiers.gatherBonus += 1;
-          }
-        },
-        {
-          id: 'cooking',
-          name: 'Cooking',
-          cost: { wood: 6, stone: 6, food: 4, flint: 1, knowledge: 3 },
-          description: 'Requires Fire. Reduces food consumption per non-chief tribe member.',
-          requirements: ['fire'],
-          onResearch(state) {
-            state.research.cooking = true;
-            state.modifiers.foodConsumptionReduction = 0.5;
-          }
-        },
-        {
-          id: 'crafters_lean_to',
-          name: 'Crafter\'s Lean-to',
-          cost: { wood: 10, stone: 4, food: 0, flint: 0, knowledge: 1 },
-          description: 'Required for Spears and Sharpened Tools research.',
-          requirements: ['storage'],
-          onResearch(state) {
-            state.research.crafters_lean_to = true;
-          }
-        },
-        {
-          id: 'spears',
-          name: 'Spears',
-          cost: { wood: 6, stone: 0, food: 0, flint: 3, knowledge: 2 },
-          description: 'Requires Stone Knapping and Crafter\'s Lean-to. Improves Hunter-Gatherer food intake.',
-          requirements: ['stone_knapping', 'crafters_lean_to'],
-          onResearch(state) {
-            state.research.spears = true;
-          }
-        },
-        {
-          id: 'sharpened_tools',
-          name: 'Sharpened Tools',
-          cost: { wood: 4, stone: 0, food: 0, flint: 2, knowledge: 2 },
-          description: 'Requires Stone Knapping and Crafter\'s Lean-to. Improves gathering efficiency.',
-          requirements: ['stone_knapping', 'crafters_lean_to'],
-          onResearch(state) {
-            state.research.sharpened_tools = true;
-            state.modifiers.gatherBonus += 1;
-          }
-        }
+        { id: 'storage', name: 'Storage', cost: { wood: 8, stone: 8, food: 0, flint: 0, knowledge: 2 }, description: 'Unlocks Granary, Wood Pile, Stone Pile, and the Tribe section.', req: [] },
+        { id: 'stone_knapping', name: 'Stone Knapping', cost: { wood: 4, stone: 6, food: 0, flint: 0, knowledge: 2 }, description: 'Unlocks Flint as a resource from Stone gathering.', req: [] },
+        { id: 'fire', name: 'Fire', cost: { wood: 8, stone: 8, food: 0, flint: 2, knowledge: 3 }, description: 'Requires Stone Knapping. Improves camp efficiency and unlocks Cooking.', req: ['stone_knapping'] },
+        { id: 'cooking', name: 'Cooking', cost: { wood: 6, stone: 6, food: 4, flint: 1, knowledge: 3 }, description: 'Requires Fire. Reduces food consumption per non-chief member.', req: ['fire'] },
+        { id: 'crafters_lean_to', name: 'Crafter\'s Lean-to', cost: { wood: 10, stone: 4, food: 0, flint: 0, knowledge: 1 }, description: 'Required for Spears and Sharpened Tools.', req: ['storage'] },
+        { id: 'spears', name: 'Spears', cost: { wood: 6, stone: 0, food: 0, flint: 3, knowledge: 2 }, description: 'Requires Stone Knapping and Crafter\'s Lean-to. Improves Hunter-Gatherer food intake.', req: ['stone_knapping', 'crafters_lean_to'] },
+        { id: 'sharpened_tools', name: 'Sharpened Tools', cost: { wood: 4, stone: 0, food: 0, flint: 2, knowledge: 2 }, description: 'Requires Stone Knapping and Crafter\'s Lean-to. Improves gathering efficiency.', req: ['stone_knapping', 'crafters_lean_to'] },
       ];
 
       const buildingDefs = [
-        {
-          id: 'hut',
-          name: 'Hut',
-          unique: false,
-          maxCount: 999,
-          baseCost: { wood: 12, stone: 4, food: 0, flint: 0, knowledge: 0 },
-          description: 'Provides 2 additional population cap per Hut.',
-          requirements: ['storage'],
-          effectText: 'Each Hut increases the population cap by 2.',
-          unlock(state) {
-            return state.unlocks.storage;
-          }
-        },
-        {
-          id: 'granary',
-          name: 'Granary',
-          unique: false,
-          maxCount: 999,
-          baseCost: { wood: 10, stone: 8, food: 0, flint: 0, knowledge: 0 },
-          description: 'Increases Food storage cap.',
-          requirements: ['storage'],
-          effectText: 'Each Granary increases Food cap by 30.',
-          unlock(state) {
-            return state.unlocks.storage;
-          }
-        },
-        {
-          id: 'wood_pile',
-          name: 'Wood Pile',
-          unique: false,
-          maxCount: 999,
-          baseCost: { wood: 6, stone: 4, food: 0, flint: 0, knowledge: 0 },
-          description: 'Increases Wood storage cap.',
-          requirements: ['storage'],
-          effectText: 'Each Wood Pile increases Wood cap by 25.',
-          unlock(state) {
-            return state.unlocks.storage;
-          }
-        },
-        {
-          id: 'stone_pile',
-          name: 'Stone Pile',
-          unique: false,
-          maxCount: 999,
-          baseCost: { wood: 4, stone: 6, food: 0, flint: 0, knowledge: 0 },
-          description: 'Increases Stone storage cap.',
-          requirements: ['storage'],
-          effectText: 'Each Stone Pile increases Stone cap by 25.',
-          unlock(state) {
-            return state.unlocks.storage;
-          }
-        },
-        {
-          id: 'shamans_circle',
-          name: 'Shaman\'s Circle',
-          unique: false,
-          maxCount: 999,
-          baseCost: { wood: 8, stone: 8, food: 2, flint: 0, knowledge: 1 },
-          description: 'Increases Knowledge production and Knowledge storage cap.',
-          requirements: ['fire'],
-          effectText: 'Each Shaman\'s Circle adds Knowledge production and +10 Knowledge cap.',
-          unlock(state) {
-            return state.research.fire;
-          }
-        },
-        {
-          id: 'crafters_lean_to',
-          name: 'Crafter\'s Lean-to',
-          unique: true,
-          maxCount: 1,
-          baseCost: { wood: 8, stone: 4, food: 0, flint: 0, knowledge: 0 },
-          description: 'Required for Spears and Sharpened Tools research.',
-          requirements: ['storage'],
-          effectText: 'Unlocks the crafting research chain.',
-          unlock(state) {
-            return state.unlocks.storage;
-          }
-        },
-        {
-          id: 'fire_pit',
-          name: 'Fire Pit',
-          unique: true,
-          maxCount: 1,
-          baseCost: { wood: 16, stone: 10, food: 4, flint: 3, knowledge: 0 },
-          description: 'Milestone building that boosts morale and efficiency.',
-          requirements: ['fire', 'cooking'],
-          effectText: 'Requires Fire and Cooking research before it appears or can be built. Boosts camp efficiency.',
-          unlock(state) {
-            return state.research.fire && state.research.cooking;
-          }
-        },
-        {
-          id: 'tribal_hall',
-          name: 'Tribal Hall',
-          unique: true,
-          maxCount: 1,
-          baseCost: { wood: 20, stone: 16, food: 8, flint: 4, knowledge: 2 },
-          description: 'Milestone structure that marks the formal tribe and unlocks job control.',
-          requirements: ['fire_pit', 'crafters_lean_to'],
-          effectText: 'Unlocks worker assignments in the Tribe section.',
-          unlock(state) {
-            return state.buildings.fire_pit >= 1 && state.buildings.crafters_lean_to >= 1;
-          }
-        }
-      ];
-
-      const jobDefs = [
-        {
-          id: 'hunter_gatherer',
-          name: 'Hunter-Gatherer',
-          description: 'Default job. Generates Food each second to keep the tribe alive.',
-          resource: 'food'
-        },
-        {
-          id: 'shaman_sage',
-          name: 'Shaman/Sage',
-          description: 'Generates Knowledge each second.',
-          resource: 'knowledge'
-        }
+        { id: 'hut', name: 'Hut', unique: false, baseCost: { wood: 12, stone: 4, food: 0, flint: 0, knowledge: 0 }, description: 'Provides 2 housing.', req: ['storage'] },
+        { id: 'granary', name: 'Granary', unique: false, baseCost: { wood: 10, stone: 8, food: 0, flint: 0, knowledge: 0 }, description: 'Increases Food storage cap.', req: ['storage'] },
+        { id: 'wood_pile', name: 'Wood Pile', unique: false, baseCost: { wood: 6, stone: 4, food: 0, flint: 0, knowledge: 0 }, description: 'Increases Wood storage cap.', req: ['storage'] },
+        { id: 'stone_pile', name: 'Stone Pile', unique: false, baseCost: { wood: 4, stone: 6, food: 0, flint: 0, knowledge: 0 }, description: 'Increases Stone storage cap.', req: ['storage'] },
+        { id: 'shamans_circle', name: 'Shaman\'s Circle', unique: false, baseCost: { wood: 8, stone: 8, food: 2, flint: 0, knowledge: 1 }, description: 'Increases Knowledge production and Knowledge cap.', req: ['fire'] },
+        { id: 'crafters_lean_to', name: 'Crafter\'s Lean-to', unique: true, baseCost: { wood: 8, stone: 4, food: 0, flint: 0, knowledge: 0 }, description: 'Required for Spears and Sharpened Tools.', req: ['storage'] },
+        { id: 'fire_pit', name: 'Fire Pit', unique: true, baseCost: { wood: 16, stone: 10, food: 4, flint: 3, knowledge: 0 }, description: 'Requires Fire and Cooking. Boosts morale and efficiency.', req: ['fire', 'cooking'] },
+        { id: 'tribal_hall', name: 'Tribal Hall', unique: true, baseCost: { wood: 20, stone: 16, food: 8, flint: 4, knowledge: 2 }, description: 'Marks the tribe and unlocks worker assignments.', req: ['fire_pit', 'crafters_lean_to'] },
       ];
 
       const defaultState = {
         version: SAVE_VERSION,
-        createdAt: Date.now(),
-        updatedAt: Date.now(),
-        age: 'Stone Age',
         resources: { wood: 0, stone: 0, food: 0, flint: 0, knowledge: 0 },
-        research: {
-          storage: false,
-          stone_knapping: false,
-          fire: false,
-          cooking: false,
-          crafters_lean_to: false,
-          spears: false,
-          sharpened_tools: false
-        },
-        buildings: {
-          hut: 0,
-          granary: 0,
-          wood_pile: 0,
-          stone_pile: 0,
-          shamans_circle: 0,
-          crafters_lean_to: 0,
-          fire_pit: 0,
-          tribal_hall: 0
-        },
-        unlocks: {
-          storage: false,
-          flint: false,
-          tribe: false
-        },
-        modifiers: {
-          gatherBonus: 0,
-          stoneFlintChance: 0,
-          foodConsumptionReduction: 0,
-          hunterGathererBonus: 0
-        },
-        uiFlags: {
-          hungryAnnounced: false
-        },
+        research: { storage: false, stone_knapping: false, fire: false, cooking: false, crafters_lean_to: false, spears: false, sharpened_tools: false },
+        buildings: { hut: 0, granary: 0, wood_pile: 0, stone_pile: 0, shamans_circle: 0, crafters_lean_to: 0, fire_pit: 0, tribal_hall: 0 },
+        unlocks: { flint: false },
+        ui: { researchVisible: false, tribeVisible: false, hungryAnnounced: false },
         population: 3,
-        workersUnlocked: false,
-        populationJobs: {
-          hunter_gatherer: 2,
-          shaman_sage: 0
-        },
-        lastAction: 'You arrive at a small camp with nothing but your hands.'
+        jobs: { hunter_gatherer: 2, shaman_sage: 0 },
+        selectedTab: 'camp',
       };
 
       const els = {
+        resourceGrid: document.getElementById('resourceGrid'),
+        progressionMount: document.getElementById('progressionMount'),
         ageText: document.getElementById('ageText'),
         populationText: document.getElementById('populationText'),
         foodDemandText: document.getElementById('foodDemandText'),
         defaultJobText: document.getElementById('defaultJobText'),
         status: document.getElementById('status'),
-        woodText: document.getElementById('woodText'),
-        stoneText: document.getElementById('stoneText'),
-        foodText: document.getElementById('foodText'),
-        flintText: document.getElementById('flintText'),
-        knowledgeText: document.getElementById('knowledgeText'),
-        researchList: document.getElementById('researchList'),
-        buildingList: document.getElementById('buildingList'),
-        jobList: document.getElementById('jobList'),
-        jobNote: document.getElementById('jobNote'),
         saveText: document.getElementById('saveText'),
         gatherWoodBtn: document.getElementById('gatherWoodBtn'),
         gatherStoneBtn: document.getElementById('gatherStoneBtn'),
         gatherFoodBtn: document.getElementById('gatherFoodBtn'),
-        resetBtn: document.getElementById('resetBtn')
+        resetBtn: document.getElementById('resetBtn'),
       };
 
-      function clone(value) { return JSON.parse(JSON.stringify(value)); }
-      function clamp(n, min, max) { return Math.min(max, Math.max(min, n)); }
-      function sumResourceCaps(state) {
-        return {
-          wood: 40 + state.buildings.wood_pile * 25,
-          stone: 40 + state.buildings.stone_pile * 25,
-          food: 40 + state.buildings.granary * 30,
-          flint: state.unlocks.flint ? 15 + state.buildings.stone_pile * 2 : 0,
-          knowledge: 10 + state.buildings.shamans_circle * 10
-        };
-      }
-      function getPopulationCap(state) {
-        return 3 + state.buildings.hut * 2;
-      }
+      function clone(v) { return JSON.parse(JSON.stringify(v)); }
       function loadState() {
         try {
           const raw = localStorage.getItem(STORAGE_KEY);
-          if (!raw) return { state: clone(defaultState), loaded: false };
+          if (!raw) return clone(defaultState);
           const parsed = JSON.parse(raw);
-          if (!parsed || parsed.version !== SAVE_VERSION) return { state: clone(defaultState), loaded: false };
+          if (!parsed || parsed.version !== SAVE_VERSION) return clone(defaultState);
           return {
-            state: {
-              ...clone(defaultState),
-              ...parsed,
-              resources: { ...clone(defaultState.resources), ...(parsed.resources || {}) },
-              research: { ...clone(defaultState.research), ...(parsed.research || {}) },
-              buildings: { ...clone(defaultState.buildings), ...(parsed.buildings || {}) },
-              unlocks: { ...clone(defaultState.unlocks), ...(parsed.unlocks || {}) },
-              modifiers: { ...clone(defaultState.modifiers), ...(parsed.modifiers || {}) },
-              uiFlags: { ...clone(defaultState.uiFlags), ...(parsed.uiFlags || {}) },
-              populationJobs: { ...clone(defaultState.populationJobs), ...(parsed.populationJobs || {}) }
-            },
-            loaded: true
+            ...clone(defaultState),
+            ...parsed,
+            resources: { ...clone(defaultState.resources), ...(parsed.resources || {}) },
+            research: { ...clone(defaultState.research), ...(parsed.research || {}) },
+            buildings: { ...clone(defaultState.buildings), ...(parsed.buildings || {}) },
+            unlocks: { ...clone(defaultState.unlocks), ...(parsed.unlocks || {}) },
+            ui: { ...clone(defaultState.ui), ...(parsed.ui || {}) },
+            jobs: { ...clone(defaultState.jobs), ...(parsed.jobs || {}) },
           };
         } catch {
-          return { state: clone(defaultState), loaded: false };
+          return clone(defaultState);
         }
       }
-      const loaded = loadState();
-      let state = loaded.state;
-      function saveState() {
-        state.updatedAt = Date.now();
-        try {
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-          els.saveText.textContent = 'Saved locally just now.';
-        } catch {
-          els.saveText.textContent = 'Save failed in this browser session.';
-        }
+
+      let state = loadState();
+      let loadedFromStorage = !!localStorage.getItem(STORAGE_KEY);
+
+      function save() {
+        try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch {}
       }
-      function setStatus(text, bad) {
+
+      function setStatus(text, bad = false) {
         els.status.textContent = text;
         els.status.className = bad ? 'status bad' : 'status';
       }
-      function hasResearch(id) { return !!state.research[id]; }
-      function canPay(cost) {
-        return state.resources.wood >= cost.wood &&
-          state.resources.stone >= cost.stone &&
-          state.resources.food >= cost.food &&
-          state.resources.flint >= cost.flint &&
-          state.resources.knowledge >= cost.knowledge;
+
+      function capWood() { return 40 + state.buildings.wood_pile * 25; }
+      function capStone() { return 40 + state.buildings.stone_pile * 25; }
+      function capFood() { return 40 + state.buildings.granary * 30; }
+      function capFlint() { return state.unlocks.flint ? 15 + state.buildings.stone_pile * 2 : 0; }
+      function capKnowledge() { return 10 + state.buildings.shamans_circle * 10; }
+      function capPopulation() { return 3 + state.buildings.hut * 2; }
+
+      function anyResearchVisible() {
+        return researchDefs.some(r => !state.research[r.id] && r.req.every(req => state.research[req]));
       }
-      function pay(cost) {
-        state.resources.wood -= cost.wood;
-        state.resources.stone -= cost.stone;
-        state.resources.food -= cost.food;
-        state.resources.flint -= cost.flint;
-        state.resources.knowledge -= cost.knowledge;
+      function anyBuildingVisible() {
+        return buildingDefs.some(b => !state.buildings[b.id] || b.unique && state.buildings[b.id] < 1);
       }
-      function describeRequirements(def) {
-        const parts = [];
-        (def.requirements || []).forEach((req) => {
-          const r = researchDefs.find((x) => x.id === req);
-          parts.push(r ? ('research ' + r.name) : req);
-        });
-        return parts.length ? parts.join(', ') : 'none';
+
+      function showResearchPanelIfNeeded() {
+        if (!state.ui.researchVisible && (state.resources.wood > 0 || state.resources.stone > 0 || state.resources.food > 0)) {
+          state.ui.researchVisible = true;
+        }
       }
-      function missingResearch(def) {
-        return (def.requirements || []).filter((req) => !hasResearch(req));
+
+      function showTribePanelIfNeeded() {
+        if (!state.ui.tribeVisible && state.research.storage) state.ui.tribeVisible = true;
       }
-      function availableResearch(def) {
-        return (def.requirements || []).every(hasResearch);
+
+      function clampRes(key, cap) {
+        state.resources[key] = Math.min(cap, Math.max(0, state.resources[key]));
       }
-      function getGatherBonus() {
-        let bonus = state.modifiers.gatherBonus;
-        if (state.research.fire) bonus += 1;
-        return bonus;
-      }
+
       function gather(type) {
-        let amount;
+        let amount = 0;
         if (type === 'wood') {
-          amount = 2 + Math.floor(Math.random() * 3) + getGatherBonus();
-          state.resources.wood = Math.min(sumResourceCaps(state).wood, state.resources.wood + amount);
-          setStatus('You gathered ' + amount + ' Wood.', false);
+          amount = 2 + Math.floor(Math.random() * 3) + (state.research.sharpened_tools ? 1 : 0) + (state.research.fire ? 1 : 0);
+          state.resources.wood += amount;
+          clampRes('wood', capWood());
+          setStatus(`You gathered ${amount} Wood.`, false);
         } else if (type === 'stone') {
-          amount = 1 + Math.floor(Math.random() * 3) + getGatherBonus();
-          state.resources.stone = Math.min(sumResourceCaps(state).stone, state.resources.stone + amount);
-          let note = '';
+          amount = 1 + Math.floor(Math.random() * 3) + (state.research.sharpened_tools ? 1 : 0) + (state.research.fire ? 1 : 0);
+          state.resources.stone += amount;
+          clampRes('stone', capStone());
           if (state.unlocks.flint) {
-            const chance = clamp(state.modifiers.stoneFlintChance || 0.15, 0.1, 0.6);
+            const chance = 0.15 + (state.research.stone_knapping ? 0.15 : 0);
             if (Math.random() < chance) {
-              state.resources.flint = Math.min(sumResourceCaps(state).flint, state.resources.flint + 1);
-              note = ' You also found 1 Flint.';
+              state.resources.flint += 1;
+              clampRes('flint', capFlint());
             }
           }
-          setStatus('You gathered ' + amount + ' Stone.' + note, false);
+          setStatus(`You gathered ${amount} Stone.${state.unlocks.flint ? ' Flint may also be found.' : ''}`, false);
         } else {
-          amount = 1 + Math.floor(Math.random() * 4) + state.modifiers.gatherBonus + (state.research.fire ? 1 : 0);
-          state.resources.food = Math.min(sumResourceCaps(state).food, state.resources.food + amount);
-          setStatus('You gathered ' + amount + ' Food.', false);
+          amount = 1 + Math.floor(Math.random() * 4) + (state.research.fire ? 1 : 0);
+          state.resources.food += amount;
+          clampRes('food', capFood());
+          setStatus(`You gathered ${amount} Food.`, false);
         }
-        saveState();
-        updateUI();
+        showResearchPanelIfNeeded();
+        save();
+        render();
       }
+
+      function reqText(reqs) {
+        return reqs.map(req => {
+          const tech = researchDefs.find(r => r.id === req);
+          const building = buildingDefs.find(b => b.id === req);
+          return tech ? `research ${tech.name}` : building ? building.name : req;
+        }).join(', ');
+      }
+
+      function canPay(cost) {
+        return state.resources.wood >= cost.wood && state.resources.stone >= cost.stone && state.resources.food >= cost.food && state.resources.flint >= cost.flint && state.resources.knowledge >= cost.knowledge;
+      }
+      function pay(cost) {
+        state.resources.wood -= cost.wood; state.resources.stone -= cost.stone; state.resources.food -= cost.food; state.resources.flint -= cost.flint; state.resources.knowledge -= cost.knowledge;
+      }
+
+      function researchAvailable(def) { return def.req.every(r => state.research[r]); }
+      function researchLockedCount() { return researchDefs.filter(r => !state.research[r.id] && !researchAvailable(r)).length; }
+
       function researchTech(def) {
-        if (state.research[def.id]) {
-          setStatus(def.name + ' is already researched.', true);
-          return;
-        }
-        if (!availableResearch(def)) {
-          setStatus('You need ' + describeRequirements(def) + ' before researching ' + def.name + '.', true);
-          return;
-        }
-        if (!canPay(def.cost)) {
-          setStatus('You need more resources to research ' + def.name + '.', true);
-          return;
-        }
+        if (state.research[def.id]) return;
+        if (!researchAvailable(def)) { setStatus(`You need ${reqText(def.req)} before researching ${def.name}.`, true); return; }
+        if (!canPay(def.cost)) { setStatus(`You need more resources to research ${def.name}.`, true); return; }
         pay(def.cost);
         state.research[def.id] = true;
-        if (typeof def.onResearch === 'function') def.onResearch(state);
-        setStatus('You researched ' + def.name + '.', false);
-        saveState();
-        updateUI();
+        if (def.id === 'stone_knapping') state.unlocks.flint = true;
+        if (def.id === 'storage') state.ui.tribeVisible = true;
+        if (def.id === 'cooking') state.ui.tribeVisible = true;
+        setStatus(`You researched ${def.name}.`, false);
+        save();
+        render();
       }
+
+      function buildingAvailable(def) { return def.req.every(r => state.research[r] || (state.buildings[r] || 0) > 0); }
       function buildingCost(def) {
         const count = state.buildings[def.id] || 0;
         const scale = def.unique ? 1 : 1 + Math.floor(count * 0.2);
@@ -585,208 +281,125 @@
           stone: Math.ceil(def.baseCost.stone * scale),
           food: Math.ceil(def.baseCost.food * scale),
           flint: Math.ceil(def.baseCost.flint * scale),
-          knowledge: Math.ceil(def.baseCost.knowledge * scale)
+          knowledge: Math.ceil(def.baseCost.knowledge * scale),
         };
-      }
-      function buildingRequiresText(def) {
-        const reqText = describeRequirements(def);
-        return reqText === 'none' ? 'No research requirement.' : 'Requires ' + reqText + ' before it appears or can be built.';
       }
       function build(def) {
         const count = state.buildings[def.id] || 0;
-        if (!def.unlock(state)) {
-          setStatus(def.name + ' is locked until ' + buildingRequiresText(def), true);
-          return;
-        }
-        if (def.unique && count >= 1) {
-          setStatus(def.name + ' can only be built once.', true);
-          return;
-        }
+        if (!buildingAvailable(def)) { setStatus(`You need ${reqText(def.req)} before building ${def.name}.`, true); return; }
+        if (def.unique && count >= 1) { setStatus(`${def.name} can only be built once.`, true); return; }
         const cost = buildingCost(def);
-        if (!canPay(cost)) {
-          setStatus('You need more resources to build ' + def.name + '.', true);
-          return;
-        }
+        if (!canPay(cost)) { setStatus(`You need more resources to build ${def.name}.`, true); return; }
         pay(cost);
         state.buildings[def.id] = count + 1;
-        if (def.id === 'fire_pit') state.modifiers.gatherBonus += 1;
-        if (def.id === 'tribal_hall') state.workersUnlocked = true;
-        setStatus('You built ' + def.name + '.', false);
-        saveState();
-        updateUI();
+        if (def.id === 'tribal_hall') state.ui.tribeVisible = true;
+        setStatus(`You built ${def.name}.`, false);
+        save();
+        render();
       }
-      function hunterYield() {
-        let base = 1;
-        if (state.research.spears) base += 1;
-        if (state.buildings.fire_pit >= 1) base += 1;
-        return base;
-      }
-      function knowledgeYield() {
-        return 1 + state.buildings.shamans_circle;
-      }
-      function foodConsumptionPerSecond() {
-        if (state.population <= 1) return 0;
-        const reduction = state.research.cooking ? 0.5 : 0;
-        return Math.max(0, (state.population - 1) * (1 - reduction));
-      }
-      function applyTick() {
-        const caps = sumResourceCaps(state);
-        const hunters = state.populationJobs.hunter_gatherer || 0;
-        const sages = state.populationJobs.shaman_sage || 0;
 
-        state.resources.food = Math.min(caps.food, state.resources.food + hunters * hunterYield());
-        state.resources.knowledge = Math.min(caps.knowledge, state.resources.knowledge + sages * knowledgeYield());
+      function hunterYield() { return 1 + (state.research.spears ? 1 : 0) + (state.buildings.fire_pit ? 1 : 0); }
+      function sageYield() { return 1 + state.buildings.shamans_circle; }
+      function foodDemand() { return state.population <= 1 ? 0 : Math.max(0, (state.population - 1) * (state.research.cooking ? 0.5 : 1)); }
 
-        const demand = foodConsumptionPerSecond();
-        if (demand > 0) {
-          state.resources.food = Math.max(0, state.resources.food - demand);
-        }
+      function tick() {
+        state.resources.food = Math.min(capFood(), state.resources.food + state.jobs.hunter_gatherer * hunterYield());
+        if (state.ui.tribeVisible) state.resources.knowledge = Math.min(capKnowledge(), state.resources.knowledge + state.jobs.shaman_sage * sageYield());
+        const need = foodDemand();
+        if (need > 0) state.resources.food = Math.max(0, state.resources.food - need);
         if (state.resources.food <= 0 && state.population > 1) {
-          if (!state.uiFlags.hungryAnnounced) {
+          if (!state.ui.hungryAnnounced) {
+            state.ui.hungryAnnounced = true;
             setStatus('The tribe is hungry. Research Cooking or increase food production.', true);
-            state.uiFlags.hungryAnnounced = true;
           }
-        } else if (state.uiFlags.hungryAnnounced) {
-          state.uiFlags.hungryAnnounced = false;
+        } else if (state.ui.hungryAnnounced) {
+          state.ui.hungryAnnounced = false;
         }
-        saveState();
-        updateUI();
+        save();
+        render();
       }
-      function assignJob(jobId, delta) {
-        if (!state.workersUnlocked) {
-          setStatus('Worker assignments unlock after the Tribal Hall is built.', true);
-          return;
+
+      function renderResources() {
+        const cards = [];
+        cards.push(['Wood', `${state.resources.wood} / ${capWood()}`, 'Used for buildings and research.']);
+        cards.push(['Stone', `${state.resources.stone} / ${capStone()}`, 'Used for stronger structures and research.']);
+        cards.push(['Food', `${state.resources.food} / ${capFood()}`, 'Consumed by the tribe.']);
+        if (state.unlocks.flint) cards.push(['Flint', `${state.resources.flint} / ${capFlint()}`, 'Unlocked by Stone Knapping and gathered from Stone.']);
+        if (state.ui.tribeVisible) cards.push(['Knowledge', `${state.resources.knowledge} / ${capKnowledge()}`, 'Generated by sages and Shaman’s Circle.']);
+        els.resourceGrid.innerHTML = cards.map(([title, value, note], i) => `
+          <div class="card" role="listitem">
+            <p class="card-title">${title}</p>
+            <p class="card-value">${value}</p>
+            <p class="card-note">${note}</p>
+          </div>`).join('');
+      }
+
+      function renderProgression() {
+        const mount = els.progressionMount;
+        const sections = [];
+
+        if (state.ui.researchVisible) {
+          const visibleResearch = researchDefs.filter(r => !state.research[r.id] && researchAvailable(r));
+          if (visibleResearch.length) {
+            sections.push(`<section class="panel" aria-labelledby="research-heading"><h2 id="research-heading">Research</h2><div class="list" role="list" aria-label="Available technologies">${visibleResearch.map(def => {
+              const cost = def.cost;
+              const req = def.req.length ? `Requires ${reqText(def.req)}.` : 'Available now.';
+              return `<button class="action" type="button" aria-label="${def.name}. ${def.description}" aria-describedby="research-${def.id}-desc" data-research="${def.id}"><div class="card"><p class="card-title">${def.name}</p><p class="card-note" id="research-${def.id}-desc">${def.description} Cost: ${cost.wood} Wood, ${cost.stone} Stone, ${cost.food} Food, ${cost.flint} Flint, ${cost.knowledge} Knowledge. ${req}</p></div></button>`;
+            }).join('')}</div></section>`);
+          }
         }
-        const totalAssignable = Math.max(0, state.population - 1);
-        const totalAssigned = (state.populationJobs.hunter_gatherer || 0) + (state.populationJobs.shaman_sage || 0);
-        if (delta > 0 && totalAssigned >= totalAssignable) {
-          setStatus('There are no unassigned tribe members left.', true);
-          return;
+
+        if (state.ui.tribeVisible) {
+          const visibleBuildings = buildingDefs.filter(b => buildingAvailable(b) && ((b.unique && (state.buildings[b.id] || 0) < 1) || !b.unique));
+          if (visibleBuildings.length) {
+            sections.push(`<section class="panel" aria-labelledby="tribe-heading"><h2 id="tribe-heading">Tribe</h2><h3>Buildings</h3><div class="list" role="list" aria-label="Available buildings">${visibleBuildings.map(def => {
+              const cost = buildingCost(def);
+              const req = def.req.length ? `Requires ${reqText(def.req)}.` : 'Available now.';
+              const owned = state.buildings[def.id] || 0;
+              return `<button class="action" type="button" aria-label="${def.name}. ${def.description}" aria-describedby="building-${def.id}-desc" data-building="${def.id}"><div class="card"><p class="card-title">${def.name}</p><p class="card-note" id="building-${def.id}-desc">${def.description} Cost: ${cost.wood} Wood, ${cost.stone} Stone, ${cost.food} Food, ${cost.flint} Flint, ${cost.knowledge} Knowledge. ${req} Owned: ${owned}.</p></div></button>`;
+            }).join('')}</div>${state.buildings.tribal_hall >= 1 ? `<h3>Jobs</h3><div class="list" role="list" aria-label="Worker assignments">${['hunter_gatherer', 'shaman_sage'].map(id => {
+              const label = id === 'hunter_gatherer' ? 'Hunter-Gatherer' : 'Shaman/Sage';
+              const desc = id === 'hunter_gatherer' ? 'Default job. Generates Food each second.' : 'Generates Knowledge each second.';
+              const count = state.jobs[id] || 0;
+              return `<div class="card" role="listitem" aria-label="${label}. ${desc}" aria-describedby="job-${id}-desc"><p class="card-title">${label}</p><p class="card-note" id="job-${id}-desc">${desc}</p><p class="card-note">Assigned tribe members: ${count}</p></div>`;
+            }).join('')}</div>` : ''}</section>`);
+          }
         }
-        const current = state.populationJobs[jobId] || 0;
-        const next = current + delta;
-        if (next < 0) return;
-        state.populationJobs[jobId] = next;
-        setStatus('Job assignment updated.', false);
-        saveState();
-        updateUI();
+
+        mount.innerHTML = sections.join('');
+        mount.querySelectorAll('[data-research]').forEach(btn => btn.addEventListener('click', () => researchTech(researchDefs.find(r => r.id === btn.dataset.research))));
+        mount.querySelectorAll('[data-building]').forEach(btn => btn.addEventListener('click', () => build(buildingDefs.find(b => b.id === btn.dataset.building))));
       }
-      function renderResearch() {
-        els.researchList.innerHTML = '';
-        researchDefs.forEach((def) => {
-          const researched = hasResearch(def.id);
-          const unlocked = availableResearch(def);
-          const costText = 'Cost: ' + def.cost.wood + ' Wood, ' + def.cost.stone + ' Stone, ' + def.cost.food + ' Food, ' + def.cost.flint + ' Flint, ' + def.cost.knowledge + ' Knowledge.';
-          const reqText = buildingRequiresText({ requirements: def.requirements || [] }).replace('Requires ', 'Requires research ');
-          const card = document.createElement('button');
-          card.className = 'action';
-          card.type = 'button';
-          card.disabled = researched || !unlocked || !canPay(def.cost);
-          card.setAttribute('aria-label', def.name + '. ' + def.description);
-          card.setAttribute('aria-describedby', 'research-' + def.id + '-desc');
-          card.addEventListener('click', () => researchTech(def));
-          card.innerHTML = '<div class="card"><p class="card-title">' + def.name + '</p><p class="card-note" id="research-' + def.id + '-desc">' + def.description + ' ' + costText + ' ' + (def.requirements && def.requirements.length ? 'Requires ' + describeRequirements(def) + '.' : 'Available now.') + '</p><p class="card-note">' + (researched ? 'Researched.' : unlocked ? 'Available now.' : 'Missing: ' + missingResearch(def).join(', ')) + '</p></div>';
-          els.researchList.appendChild(card);
-        });
-      }
-      function renderBuildings() {
-        els.buildingList.innerHTML = '';
-        buildingDefs.forEach((def) => {
-          const count = state.buildings[def.id] || 0;
-          const unlocked = def.unlock(state);
-          const cost = buildingCost(def);
-          const card = document.createElement('button');
-          card.className = 'action';
-          card.type = 'button';
-          card.disabled = !unlocked || (def.unique && count >= 1) || !canPay(cost);
-          card.setAttribute('aria-label', def.name + '. ' + def.description);
-          card.setAttribute('aria-describedby', 'building-' + def.id + '-desc');
-          card.addEventListener('click', () => build(def));
-          const requirementText = buildingRequiresText(def);
-          card.innerHTML = '<div class="card"><p class="card-title">' + def.name + '</p><p class="card-note" id="building-' + def.id + '-desc">' + def.description + ' ' + requirementText + ' Cost: ' + cost.wood + ' Wood, ' + cost.stone + ' Stone, ' + cost.food + ' Food, ' + cost.flint + ' Flint, ' + cost.knowledge + ' Knowledge.</p><p class="card-note">Owned: ' + count + '. ' + (unlocked ? (def.unique && count >= 1 ? 'Built already.' : 'Available now.') : 'Missing: ' + missingResearch(def).join(', ')) + '</p></div>';
-          els.buildingList.appendChild(card);
-        });
-      }
-      function renderJobs() {
-        els.jobList.innerHTML = '';
-        const unlocked = state.workersUnlocked;
-        els.jobNote.textContent = unlocked ? 'Assignments are now available.' : 'Worker assignments unlock after the Tribal Hall is built.';
-        jobDefs.forEach((job) => {
-          const count = state.populationJobs[job.id] || 0;
-          const wrap = document.createElement('div');
-          wrap.className = 'card';
-          wrap.setAttribute('role', 'listitem');
-          wrap.setAttribute('aria-label', job.name + '. ' + job.description);
-          wrap.setAttribute('aria-describedby', 'job-' + job.id + '-desc');
-          wrap.innerHTML = '<p class="card-title">' + job.name + '</p><p class="card-note" id="job-' + job.id + '-desc">' + job.description + '</p><p class="card-note">Assigned tribe members: ' + count + '</p>';
-          const controls = document.createElement('div');
-          controls.className = 'actions';
-          const plus = document.createElement('button');
-          plus.className = 'action';
-          plus.type = 'button';
-          plus.textContent = 'Assign one member';
-          plus.setAttribute('aria-label', 'Assign one tribe member to ' + job.name);
-          plus.disabled = !unlocked;
-          plus.addEventListener('click', () => assignJob(job.id, 1));
-          const minus = document.createElement('button');
-          minus.className = 'action';
-          minus.type = 'button';
-          minus.textContent = 'Remove one member';
-          minus.setAttribute('aria-label', 'Remove one tribe member from ' + job.name);
-          minus.disabled = !unlocked || count <= 0;
-          minus.addEventListener('click', () => assignJob(job.id, -1));
-          controls.appendChild(plus);
-          controls.appendChild(minus);
-          wrap.appendChild(controls);
-          els.jobList.appendChild(wrap);
-        });
-      }
-      function updateUI() {
-        const caps = sumResourceCaps(state);
-        const populationCap = getPopulationCap(state);
-        const demand = foodConsumptionPerSecond();
-        const foodDemandText = demand.toFixed(demand % 1 ? 1 : 0);
-        els.ageText.textContent = state.age;
-        els.populationText.textContent = state.population + ' / ' + populationCap;
-        els.foodDemandText.textContent = foodDemandText + ' per second';
+
+      function renderTop() {
+        els.ageText.textContent = 'Stone Age';
+        els.populationText.textContent = `${state.population} / ${capPopulation()}`;
+        els.foodDemandText.textContent = `${foodDemand().toFixed(foodDemand() % 1 ? 1 : 0)} per second`;
         els.defaultJobText.textContent = 'Hunter-Gatherer';
-        els.woodText.textContent = state.resources.wood + ' / ' + caps.wood;
-        els.woodText.setAttribute('aria-label', 'Wood ' + state.resources.wood + ' of ' + caps.wood);
-        els.stoneText.textContent = state.resources.stone + ' / ' + caps.stone;
-        els.stoneText.setAttribute('aria-label', 'Stone ' + state.resources.stone + ' of ' + caps.stone);
-        els.foodText.textContent = state.resources.food + ' / ' + caps.food;
-        els.foodText.setAttribute('aria-label', 'Food ' + state.resources.food + ' of ' + caps.food);
-        els.knowledgeText.textContent = state.resources.knowledge + ' / ' + caps.knowledge;
-        els.knowledgeText.setAttribute('aria-label', 'Knowledge ' + state.resources.knowledge + ' of ' + caps.knowledge);
-        if (state.unlocks.flint) {
-          els.flintText.textContent = state.resources.flint + ' / ' + caps.flint;
-          els.flintText.setAttribute('aria-label', 'Flint ' + state.resources.flint + ' of ' + caps.flint);
-        } else {
-          els.flintText.textContent = 'Locked';
-          els.flintText.setAttribute('aria-label', 'Flint locked until Stone Knapping');
-        }
-        renderResearch();
-        renderBuildings();
-        renderJobs();
-        els.saveText.textContent = loaded.loaded ? 'Saved game loaded from localStorage.' : 'Fresh game. Progress will save locally in Safari.';
+        els.saveText.textContent = loadedFromStorage ? 'Saved game loaded from localStorage.' : 'Fresh game. Progress will save locally in Safari.';
+      }
+
+      function render() {
+        renderTop();
+        renderResources();
+        renderProgression();
       }
 
       els.gatherWoodBtn.addEventListener('click', () => gather('wood'));
       els.gatherStoneBtn.addEventListener('click', () => gather('stone'));
       els.gatherFoodBtn.addEventListener('click', () => gather('food'));
       els.resetBtn.addEventListener('click', () => {
-        if (!window.confirm('Reset Havenwood Stone Age save data on this device?')) return;
+        if (!confirm('Reset Havenwood Stone Age save data on this device?')) return;
         state = clone(defaultState);
-        try { localStorage.removeItem(STORAGE_KEY); } catch {}
+        loadedFromStorage = false;
+        localStorage.removeItem(STORAGE_KEY);
         setStatus('Save cleared. The camp has been reset.', false);
-        saveState();
-        updateUI();
+        render();
       });
 
-      window.addEventListener('beforeunload', saveState);
-      updateUI();
-      if (state.lastAction) setStatus(state.lastAction, false);
-      setInterval(applyTick, TICK_MS);
+      window.addEventListener('beforeunload', save);
+      render();
+      setInterval(tick, TICK_MS);
     })();
   </script>
 </body>
