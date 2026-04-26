@@ -68,17 +68,17 @@
         <p class="statline">Population: <span id="populationText" class="value">1 / 1</span></p>
         <h3 id="resources-heading">Resources</h3>
         <div class="grid" id="resourceGrid" role="list" aria-label="Current resources">
-          <div class="card" role="listitem" data-resource="wood">
+          <div class="card" role="listitem" data-resource="wood" aria-label="Wood 0 of 40, stable">
             <p class="card-title">Wood</p>
             <p class="card-value" id="woodText" data-trend="stable" aria-label="Wood 0 of 40, stable">0 / 40</p>
             <p class="card-note">Used for buildings and research.</p>
           </div>
-          <div class="card" role="listitem" data-resource="stone">
+          <div class="card" role="listitem" data-resource="stone" aria-label="Stone 0 of 40, stable">
             <p class="card-title">Stone</p>
             <p class="card-value" id="stoneText" data-trend="stable" aria-label="Stone 0 of 40, stable">0 / 40</p>
             <p class="card-note">Used for stronger structures and research.</p>
           </div>
-          <div class="card" role="listitem" data-resource="food">
+          <div class="card" role="listitem" data-resource="food" aria-label="Food 0 of 40, stable">
             <p class="card-title">Food</p>
             <p class="card-value" id="foodText" data-trend="stable" aria-label="Food 0 of 40, stable">0 / 40</p>
             <p class="card-note">Consumed by the tribe.</p>
@@ -259,9 +259,14 @@
         const value = state.resources[key];
         const trend = trendFor(key, value);
         const text = `${value} / ${cap}`;
+        const label = `${resourceLabel(key)} ${value} of ${cap}, ${trend}`;
         textIfChanged(node.text, text);
         node.text.dataset.trend = trend;
-        attrIfChanged(node.text, "aria-label", `${resourceLabel(key)} ${value} of ${cap}, ${trend}`);
+        if (node.card) {
+          node.card.dataset.trend = trend;
+          attrIfChanged(node.card, 'aria-label', label);
+        }
+        attrIfChanged(node.text, "aria-label", label);
         resourceSnapshots[key] = value;
       }
 
