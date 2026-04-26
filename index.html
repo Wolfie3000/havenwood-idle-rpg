@@ -63,13 +63,6 @@
       <section class="panel" aria-labelledby="settlement-heading">
         <h2 id="settlement-heading">Settlement</h2>
         <p class="statline">Population: <span id="populationText" class="value">1 / 1</span></p>
-        <p id="status" class="status" role="status" aria-live="polite" aria-atomic="true">You arrive at a small camp with nothing but your hands.</p>
-        <h3>Actions</h3>
-        <div class="actions">
-          <button class="action" id="gatherWoodBtn" type="button" aria-describedby="gatherWoodDesc"><span class="button-title">Gather Wood</span><span class="button-subtitle" id="gatherWoodDesc">Gain 1 Wood.</span></button>
-          <button class="action" id="gatherStoneBtn" type="button" aria-describedby="gatherStoneDesc"><span class="button-title">Gather Stone</span><span class="button-subtitle" id="gatherStoneDesc">Gain 1 Stone.</span></button>
-          <button class="action" id="gatherFoodBtn" type="button" aria-describedby="gatherFoodDesc"><span class="button-title">Gather Food</span><span class="button-subtitle" id="gatherFoodDesc">Gain 1 Food.</span></button>
-        </div>
         <h3 id="resources-heading">Resources</h3>
         <div class="grid" id="resourceGrid" role="list" aria-label="Current resources">
           <div class="card" role="listitem" data-resource="wood">
@@ -87,6 +80,13 @@
             <p class="card-value" id="foodText" aria-label="Food 0 of 40">0 / 40</p>
             <p class="card-note">Consumed by the tribe.</p>
           </div>
+        </div>
+        <p id="status" class="status" role="status" aria-live="polite" aria-atomic="true">You arrive at a small camp with nothing but your hands.</p>
+        <h3>Actions</h3>
+        <div class="actions">
+          <button class="action" id="gatherWoodBtn" type="button" aria-describedby="gatherWoodDesc"><span class="button-title">Gather Wood</span><span class="button-subtitle" id="gatherWoodDesc">Gain 1 Wood.</span></button>
+          <button class="action" id="gatherStoneBtn" type="button" aria-describedby="gatherStoneDesc"><span class="button-title">Gather Stone</span><span class="button-subtitle" id="gatherStoneDesc">Gain 1 Stone.</span></button>
+          <button class="action" id="gatherFoodBtn" type="button" aria-describedby="gatherFoodDesc"><span class="button-title">Gather Food</span><span class="button-subtitle" id="gatherFoodDesc">Gain 1 Food.</span></button>
         </div>
       </section>
       <div id="progressionMount"></div>
