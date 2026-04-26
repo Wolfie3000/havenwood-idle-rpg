@@ -67,7 +67,7 @@
   <div class="app">
     <header>
       <h1 id="pageTitle">Havenwood Stone Age</h1>
-      <p class="small" id="buildVersion">v0.2</p>
+      <p class="small" id="buildVersion">v0.3</p>
       <!-- redeploy 2026-04-25T17:43:00-07:00 -->
       <!-- force redeploy 2026-04-25T17:50:30-07:00 -->
     </header>
@@ -78,15 +78,15 @@
         <p class="statline">Population: <span id="populationText" class="value">1 / 1</span></p>
         <h3 id="resources-heading">Resources</h3>
         <ul class="resource-list" id="resourceGrid" aria-label="Current resources">
-          <li class="resource-item yellow" role="listitem" data-resource="wood" aria-label="Wood: 0 / 40, stable">
+          <li class="resource-item yellow" role="listitem" data-resource="wood" aria-label="Wood: 0 / 40">
             <span class="resource-name">Wood</span>
             <span class="resource-value" id="woodText" data-trend="stable">0 / 40</span>
           </li>
-          <li class="resource-item yellow" role="listitem" data-resource="stone" aria-label="Stone: 0 / 40, stable">
+          <li class="resource-item yellow" role="listitem" data-resource="stone" aria-label="Stone: 0 / 40">
             <span class="resource-name">Stone</span>
             <span class="resource-value" id="stoneText" data-trend="stable">0 / 40</span>
           </li>
-          <li class="resource-item yellow" role="listitem" data-resource="food" aria-label="Food: 0 / 40, stable">
+          <li class="resource-item yellow" role="listitem" data-resource="food" aria-label="Food: 0 / 40">
             <span class="resource-name">Food</span>
             <span class="resource-value" id="foodText" data-trend="stable">0 / 40</span>
           </li>
@@ -94,9 +94,9 @@
         <p id="status" class="status" role="status" aria-live="polite" aria-atomic="true">You arrive at a small camp with nothing but your hands.</p>
         <h3>Actions</h3>
         <div class="actions">
-          <button class="action" id="gatherWoodBtn" type="button" aria-describedby="gatherWoodDesc"><span class="button-title">Gather Wood</span><span class="sr-only" id="gatherWoodDesc">Gain 1 wood</span></button>
-          <button class="action" id="gatherStoneBtn" type="button" aria-describedby="gatherStoneDesc"><span class="button-title">Gather Stone</span><span class="sr-only" id="gatherStoneDesc">Gain 1 stone</span></button>
-          <button class="action" id="gatherFoodBtn" type="button" aria-describedby="gatherFoodDesc"><span class="button-title">Gather Food</span><span class="sr-only" id="gatherFoodDesc">Gain 1 food</span></button>
+          <button class="action" id="gatherWoodBtn" type="button" aria-label="Gather Wood" onclick="gatherResource('wood')"><span class="button-title">Gather Wood</span><span class="button-subtitle" aria-hidden="true">Gain 1 wood</span></button>
+          <button class="action" id="gatherStoneBtn" type="button" aria-label="Gather Stone" onclick="gatherResource('stone')"><span class="button-title">Gather Stone</span><span class="button-subtitle" aria-hidden="true">Gain 1 stone</span></button>
+          <button class="action" id="gatherFoodBtn" type="button" aria-label="Gather Food" onclick="gatherResource('food')"><span class="button-title">Gather Food</span><span class="button-subtitle" aria-hidden="true">Gain 1 food</span></button>
         </div>
       </section>
       <div id="progressionMount"></div>
@@ -327,7 +327,7 @@
         const value = state.resources[key];
         const trend = trendFor(key, value);
         const text = `${value} / ${cap}`;
-        const label = `${resourceLabel(key)}: ${value} / ${cap}, ${trend}`;
+        const label = `${resourceLabel(key)}: ${value} / ${cap}`;
         if (node.text) {
           textIfChanged(node.text, text);
           node.text.dataset.trend = trend;
@@ -612,6 +612,8 @@
           console.error('[Havenwood] tick failed', err);
         }
       }
+
+      window.gatherResource = gatherResource;
 
       const init = () => {
         window.addEventListener('beforeunload', save);
