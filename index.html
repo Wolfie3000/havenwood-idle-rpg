@@ -374,7 +374,7 @@
           amount = 1;
           state.resources.wood += amount;
           clampRes('wood', capWood());
-          setStatus(`You gathered ${amount} Wood.`, false);
+          setStatus(`You now have ${state.resources.wood} Wood.`, false);
         } else if (type === 'stone') {
           amount = 1;
           state.resources.stone += amount;
@@ -386,12 +386,12 @@
               clampRes('flint', capFlint());
             }
           }
-          setStatus(`You gathered ${amount} Stone.${state.unlocks.flint ? ' Flint may also be found.' : ''}`, false);
+          setStatus(`You now have ${state.resources.stone} Stone.`, false);
         } else {
           amount = 1;
           state.resources.food += amount;
           clampRes('food', capFood());
-          setStatus(`You gathered ${amount} Food.`, false);
+          setStatus(`You now have ${state.resources.food} Food.`, false);
         }
         if (showResearchPanelIfNeeded()) progressionRendered = false;
         save();
