@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="color-scheme" content="dark light">
-  <title>Havenwood Stone Age</title>
+  <title>Havenwood</title>
   <style>
     :root {
       color-scheme: dark;
@@ -55,14 +55,13 @@
 <body>
   <div class="app">
     <header>
-      <h1>Havenwood: Stone Age</h1>
+      <h1 id="pageTitle">Havenwood</h1>
       
     </header>
 
     <main>
       <section class="panel" aria-labelledby="settlement-heading">
         <h2 id="settlement-heading">Settlement</h2>
-        <p class="statline">Age: <span id="ageText" class="value">Stone Age</span></p>
         <p class="statline">Population: <span id="populationText" class="value">1 / 1</span></p>
         <p class="statline">Food demand: <span id="foodDemandText" class="value">0.0 per second</span></p>
         <p class="statline">Default job: <span id="defaultJobText" class="value">Chief</span></p>
@@ -151,7 +150,7 @@
       const els = {
         resourceGrid: document.getElementById('resourceGrid'),
         progressionMount: document.getElementById('progressionMount'),
-        ageText: document.getElementById('ageText'),
+        pageTitle: document.getElementById('pageTitle'),
         populationText: document.getElementById('populationText'),
         foodDemandText: document.getElementById('foodDemandText'),
         defaultJobText: document.getElementById('defaultJobText'),
@@ -383,8 +382,23 @@
         render();
       }
 
+      function updateAgePresentation() {
+        const ageLabel = state.age || 'Stone Age';
+        const title = `Havenwood ${ageLabel}`;
+        textIfChanged(els.pageTitle, title);
+        document.title = title;
+      }
+
+      function setAge(age) {
+        if (!age || age === state.age) return;
+        state.age = age;
+        updateAgePresentation();
+        save();
+        render();
+      }
+
       function renderTop() {
-        textIfChanged(els.ageText, 'Stone Age');
+        updateAgePresentation();
         textIfChanged(els.populationText, `${state.population} / ${capPopulation()}`);
         textIfChanged(els.foodDemandText, `${foodDemand().toFixed(foodDemand() % 1 ? 1 : 0)} per second`);
         textIfChanged(els.defaultJobText, state.population === 1 ? 'Chief' : 'Hunter-Gatherer');
@@ -468,7 +482,7 @@
       els.gatherStoneBtn.addEventListener('click', () => gather('stone'));
       els.gatherFoodBtn.addEventListener('click', () => gather('food'));
       els.resetBtn.addEventListener('click', () => {
-        if (!confirm('Reset Havenwood Stone Age save data on this device?')) return;
+        if (!confirm('Reset Havenwood save data on this device?')) return;
         state = clone(defaultState);
         loadedFromStorage = false;
         localStorage.removeItem(STORAGE_KEY);
@@ -506,6 +520,7 @@
       }
 
       window.addEventListener('beforeunload', save);
+      updateAgePresentation();
       render();
       setInterval(tick, TICK_MS);
     })();
