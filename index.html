@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="color-scheme" content="dark light">
-  <title>Havenwood</title>
+  <title>Havenwood Stone Age</title>
   <style>
     :root {
       color-scheme: dark;
@@ -66,8 +66,8 @@
 <body>
   <div class="app">
     <header>
-      <h1 id="pageTitle">Havenwood</h1>
-      <p class="small" id="buildVersion">v0.1</p>
+      <h1 id="pageTitle">Havenwood Stone Age</h1>
+      <p class="small" id="buildVersion">v0.2</p>
       <!-- redeploy 2026-04-25T17:43:00-07:00 -->
       <!-- force redeploy 2026-04-25T17:50:30-07:00 -->
     </header>
@@ -78,17 +78,17 @@
         <p class="statline">Population: <span id="populationText" class="value">1 / 1</span></p>
         <h3 id="resources-heading">Resources</h3>
         <ul class="resource-list" id="resourceGrid" aria-label="Current resources">
-          <li class="resource-item yellow" role="listitem" data-resource="wood" aria-label="Wood: 0 of 40, stable">
+          <li class="resource-item yellow" role="listitem" data-resource="wood" aria-label="Wood: 0 / 40, stable">
             <span class="resource-name">Wood</span>
-            <span class="resource-value" id="woodText" data-trend="stable" aria-hidden="true">0 / 40</span>
+            <span class="resource-value" id="woodText" data-trend="stable">0 / 40</span>
           </li>
-          <li class="resource-item yellow" role="listitem" data-resource="stone" aria-label="Stone: 0 of 40, stable">
+          <li class="resource-item yellow" role="listitem" data-resource="stone" aria-label="Stone: 0 / 40, stable">
             <span class="resource-name">Stone</span>
-            <span class="resource-value" id="stoneText" data-trend="stable" aria-hidden="true">0 / 40</span>
+            <span class="resource-value" id="stoneText" data-trend="stable">0 / 40</span>
           </li>
-          <li class="resource-item yellow" role="listitem" data-resource="food" aria-label="Food: 0 of 40, stable">
+          <li class="resource-item yellow" role="listitem" data-resource="food" aria-label="Food: 0 / 40, stable">
             <span class="resource-name">Food</span>
-            <span class="resource-value" id="foodText" data-trend="stable" aria-hidden="true">0 / 40</span>
+            <span class="resource-value" id="foodText" data-trend="stable">0 / 40</span>
           </li>
         </ul>
         <p id="status" class="status" role="status" aria-live="polite" aria-atomic="true">You arrive at a small camp with nothing but your hands.</p>
@@ -146,7 +146,7 @@
         research: { storage: false, stone_knapping: false, fire: false, cooking: false, crafters_lean_to: false, spears: false, sharpened_tools: false },
         buildings: { hut: 0, granary: 0, wood_pile: 0, stone_pile: 0, shamans_circle: 0, crafters_lean_to: 0, fire_pit: 0, tribal_hall: 0 },
         unlocks: { flint: false },
-        ui: { researchVisible: false, tribeVisible: false, hungryAnnounced: false },
+        ui: { researchVisible: true, tribeVisible: true, hungryAnnounced: false },
         population: 1,
         jobs: { hunter_gatherer: 0, shaman_sage: 0 },
       };
@@ -200,21 +200,6 @@
         return key.charAt(0).toUpperCase() + key.slice(1);
       }
 
-      function renderResourceCard(key) {
-        const node = resourceNodes[key];
-        const cap = key === 'wood' ? capWood() : key === 'stone' ? capStone() : key === 'food' ? capFood() : key === 'flint' ? capFlint() : capKnowledge();
-        if (!node || !node.text || !node.item) return;
-        const value = state.resources[key];
-        const trend = trendFor(key, value);
-        const text = `${value} / ${cap}`;
-        const label = `${resourceLabel(key)}: ${value} of ${cap}, ${trend}`;
-        textIfChanged(node.text, text);
-        node.text.dataset.trend = trend;
-        node.item.classList.remove('green', 'yellow', 'red');
-        node.item.classList.add(trendClass(trend));
-        attrIfChanged(node.item, 'aria-label', label);
-        resourceSnapshots[key] = value;
-      }
 
       function ensureFlintCard() {
         if (resourceNodes.flint.item) return;
@@ -223,7 +208,7 @@
         item.setAttribute('role', 'listitem');
         item.setAttribute('data-resource', 'flint');
         item.setAttribute('aria-label', 'Flint: 0 of 15, stable');
-        item.innerHTML = '<span class="resource-name">Flint</span><span class="resource-value" id="flintText" data-trend="stable" aria-hidden="true">0 / 15</span>';
+        item.innerHTML = '<span class="resource-name">Flint</span><span class="resource-value" id="flintText" data-trend="stable">0 / 15</span>';
         els.resourceGrid.appendChild(item);
         resourceNodes.flint.item = item;
         resourceNodes.flint.text = item.querySelector('#flintText');
@@ -237,7 +222,7 @@
         item.setAttribute('role', 'listitem');
         item.setAttribute('data-resource', 'knowledge');
         item.setAttribute('aria-label', 'Knowledge: 0 of 10, stable');
-        item.innerHTML = '<span class="resource-name">Knowledge</span><span class="resource-value" id="knowledgeText" data-trend="stable" aria-hidden="true">0 / 10</span>';
+        item.innerHTML = '<span class="resource-name">Knowledge</span><span class="resource-value" id="knowledgeText" data-trend="stable">0 / 10</span>';
         els.resourceGrid.appendChild(item);
         resourceNodes.knowledge.item = item;
         resourceNodes.knowledge.text = item.querySelector('#knowledgeText');
@@ -283,6 +268,8 @@
       }
 
       let state = loadState();
+      state.ui.researchVisible = true;
+      state.ui.tribeVisible = true;
       let loadedFromStorage = !!localStorage.getItem(STORAGE_KEY);
       let progressionRendered = false;
 
@@ -336,18 +323,23 @@
       function renderResourceCard(key) {
         const node = resourceNodes[key];
         const cap = key === 'wood' ? capWood() : key === 'stone' ? capStone() : key === 'food' ? capFood() : key === 'flint' ? capFlint() : capKnowledge();
-        if (!node || !node.text) return;
+        if (!node || (!node.text && !node.item && !node.card)) return;
         const value = state.resources[key];
         const trend = trendFor(key, value);
         const text = `${value} / ${cap}`;
-        const label = `${resourceLabel(key)} ${value} of ${cap}, ${trend}`;
-        textIfChanged(node.text, text);
-        node.text.dataset.trend = trend;
-        if (node.card) {
-          node.card.dataset.trend = trend;
-          attrIfChanged(node.card, 'aria-label', label);
+        const label = `${resourceLabel(key)}: ${value} / ${cap}, ${trend}`;
+        if (node.text) {
+          textIfChanged(node.text, text);
+          node.text.dataset.trend = trend;
+          attrIfChanged(node.text, "aria-label", label);
         }
-        attrIfChanged(node.text, "aria-label", label);
+        const target = node.card || node.item || null;
+        if (target) {
+          target.dataset.trend = trend;
+          target.classList.remove('green', 'yellow', 'red');
+          target.classList.add(trendClass(trend));
+          attrIfChanged(target, 'aria-label', label);
+        }
         resourceSnapshots[key] = value;
       }
 
@@ -591,25 +583,6 @@
         updateUI();
       }
 
-      els.gatherWoodBtn.addEventListener('click', () => gatherResource('wood'));
-      els.gatherStoneBtn.addEventListener('click', () => gatherResource('stone'));
-      els.gatherFoodBtn.addEventListener('click', () => gatherResource('food'));
-      els.resetBtn.addEventListener('click', () => {
-        if (!confirm('Reset Havenwood save data on this device?')) return;
-        state = clone(defaultState);
-        loadedFromStorage = false;
-        localStorage.removeItem(STORAGE_KEY);
-        els.progressionMount.innerHTML = '';
-        resourceNodes.flint.item = null;
-        resourceNodes.flint.text = null;
-        resourceNodes.knowledge.item = null;
-        resourceNodes.knowledge.text = null;
-        state.ui.researchVisible = false;
-        state.ui.tribeVisible = false;
-        progressionRendered = false;
-        setStatus('Save cleared. The camp has been reset.', false);
-        render();
-      });
 
       function tick() {
         state.resources.food = Math.min(capFood(), state.resources.food + state.jobs.hunter_gatherer * hunterYield());
@@ -642,16 +615,33 @@
 
       const init = () => {
         window.addEventListener('beforeunload', save);
+        els.gatherWoodBtn.addEventListener('click', () => gatherResource('wood'));
+        els.gatherStoneBtn.addEventListener('click', () => gatherResource('stone'));
+        els.gatherFoodBtn.addEventListener('click', () => gatherResource('food'));
+        els.resetBtn.addEventListener('click', () => {
+          if (!confirm('Reset Havenwood save data on this device?')) return;
+          state = clone(defaultState);
+          loadedFromStorage = false;
+          localStorage.removeItem(STORAGE_KEY);
+          els.progressionMount.innerHTML = '';
+          resourceNodes.flint.item = null;
+          resourceNodes.flint.card = null;
+          resourceNodes.flint.text = null;
+          resourceNodes.knowledge.item = null;
+          resourceNodes.knowledge.card = null;
+          resourceNodes.knowledge.text = null;
+          state.ui.researchVisible = true;
+          state.ui.tribeVisible = true;
+          progressionRendered = false;
+          setStatus('Save cleared. The camp has been reset.', false);
+          render();
+        });
         updateAgePresentation();
         render();
         setInterval(safeTick, TICK_MS);
       };
 
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', init, { once: true });
-      } else {
-        init();
-      }
+      window.onload = init;
 
   </script>
 </body>
